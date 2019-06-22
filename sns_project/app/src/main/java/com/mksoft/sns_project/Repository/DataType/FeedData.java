@@ -14,14 +14,14 @@ public class FeedData {
 
     @PrimaryKey
     @NonNull
-    @SerializedName("id")
+    @SerializedName("postId")
     @Expose
-    private String id ="";
+    private Integer postId = 0;
 
 
-    @SerializedName("name")
+    @SerializedName("writer")
     @Expose
-    private String name="";
+    private String writer="";
 
 
     @SerializedName("feed_img_url")
@@ -33,25 +33,25 @@ public class FeedData {
     @Expose
     private String userImgUrl="";
 
-    @SerializedName("feed_contents")
+    @SerializedName("content")
     @Expose
-    private String feedContents="";
+    private String content="";
 
-    @SerializedName("feed_like")
+    @SerializedName("numOfLikes ")
     @Expose
-    private String feedLike="";
+    private Integer numOfLikes = 0;
 
 
     private Date lastRefresh = null;
 
-    public FeedData(@NonNull String id, String name, String feedImgUrl, String feedContents
-            , String feedLike, Date lastRefresh) {
-        this.id = id;
-        this.name = name;
+    public FeedData(@NonNull Integer postId, String writer, String feedImgUrl, String userImgUrl, String content, Integer numOfLikes, Date lastRefresh) {
+        this.postId = postId;
+        this.writer = writer;
         this.feedImgUrl = feedImgUrl;
-        this.feedContents = feedContents;
+        this.userImgUrl = userImgUrl;
+        this.content = content;
+        this.numOfLikes = numOfLikes;
         this.lastRefresh = lastRefresh;
-        this.feedLike = feedLike;
     }
 
     public FeedData() {
@@ -64,49 +64,50 @@ public class FeedData {
         this.lastRefresh = lastRefresh;
     }
 
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
+
+    @NonNull
+    public Integer getPostId() {
+        return postId;
     }
 
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public void setPostId(@NonNull Integer postId) {
+        this.postId = postId;
     }
 
+    public String getWriter() {
+        return writer;
+    }
+
+    public void setWriter(String writer) {
+        this.writer = writer;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Integer getNumOfLikes() {
+        return numOfLikes;
+    }
+
+    public void setNumOfLikes(Integer numOfLikes) {
+        this.numOfLikes = numOfLikes;
+    }
 
     public String getFeedImgUrl() {
         return feedImgUrl;
     }
-
     public void setFeedImgUrl(String feedImgUrl) {
         this.feedImgUrl = feedImgUrl;
-    }
-
-    public String getFeedContents() {
-        return feedContents;
-    }
-    public void setFeedContents(String feedContents) {
-        this.feedContents = feedContents;
-    }
-
-    public String getFeedLike() {
-        return feedLike;
-    }
-
-    public void setFeedLike(String feedLike) {
-        this.feedLike = feedLike;
     }
 
     public String getUserImgUrl() {
         return userImgUrl;
     }
-
     public void setUserImgUrl(String userImgUrl) {
         this.userImgUrl = userImgUrl;
     }

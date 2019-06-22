@@ -59,7 +59,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     }
 
     private void configureViewModel(){
-
+        receiveID();
         userViewModel = ViewModelProviders.of(this, viewModelFactory).get(UserViewModel.class);
         userViewModel.init(userID);
         userViewModel.getUserLiveData().observe(this, userData -> updateUser(userData));
@@ -86,14 +86,16 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_feed_activity);
-        this.configureViewModel();
+
         this.configureDagger();
+        this.configureViewModel();
         newsFeedActivity = this;
         init();
     }
-
+    void receiveID(){
+        userID = "mkjw";//로그인 페이지에서 받아오기
+    }
     private void init(){
-        userID = "test";//임시아이디 갱신
         hideKeyboard = new HideKeyboard(this);
         backPressCloseHandler = new BackPressCloseHandler(this);
 

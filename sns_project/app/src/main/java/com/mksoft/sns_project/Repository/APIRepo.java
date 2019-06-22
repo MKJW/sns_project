@@ -61,7 +61,7 @@ public class APIRepo {
             // If user have to be updated
             if (!feedListDataExists) {//확인
                 Log.d("testtarace","request");
-                webservice.getNewsFeed().enqueue(new Callback<List<FeedData>>() {
+                webservice.getNewsFeed(userLogin).enqueue(new Callback<List<FeedData>>() {
                     @Override
                     public void onResponse(Call<List<FeedData>> call, Response<List<FeedData>> response) {
                         Log.e("TAG", "DATA REFRESHED FROM NETWORK");
@@ -70,7 +70,7 @@ public class APIRepo {
                         executor.execute(() -> {
                             List<FeedData> feedDataList = response.body();
                             for(int i =0; i<feedDataList.size(); i++){
-                                Log.d("test190509", feedDataList.get(i).getName());
+                                Log.d("test190509", feedDataList.get(i).getWriter());
                                 feedDataList.get(i).setLastRefresh(new Date());
 
                             }

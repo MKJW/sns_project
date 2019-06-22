@@ -60,10 +60,10 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         myViewHolder = (MyViewHolder) holder;
-        myViewHolder.userNameTextView.setText(items.get(position).getName());
-        Glide.with(context).load(items.get(position).getFeedImgUrl()).into(myViewHolder.feedImageView);
-        myViewHolder.feedContentsTextView.setText(items.get(position).getFeedContents());
-        myViewHolder.feedLike.setText("좋아요 "+items.get(position).getFeedLike()+"개");
+        myViewHolder.userNameTextView.setText(items.get(position).getWriter());
+        //Glide.with(context).load(items.get(position).getFeedImgUrl()).into(myViewHolder.feedImageView);
+        myViewHolder.feedContentsTextView.setText(items.get(position).getContent());
+        myViewHolder.feedLike.setText("좋아요 "+(items.get(position).getNumOfLikes())+"개");
         if(items.get(position).getUserImgUrl() == null||items.get(position).getUserImgUrl().length() == 0){
             Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.regestUserImg);
         }else{

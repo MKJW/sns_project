@@ -13,12 +13,14 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface APIService {
-    @GET("")
+    @GET("/posts/{userID}")
     Call<UserData> getUser(
             @Path("userID") String userID);
 
-    @GET("")
-    Call<List<FeedData>> getNewsFeed();
+    @GET("/posts/{userID}")
+    Call<List<FeedData>> getNewsFeed(
+            @Path("userID") String userID
+    );
 
 
 }

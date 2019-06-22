@@ -29,6 +29,7 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(NewsFeedViewModel.class)
     abstract ViewModel bindNewsFeedViewModel(NewsFeedViewModel repoViewModel);
+
     @Binds
     abstract ViewModelProvider.Factory bindViewModelFactory(FactoryViewModel factory);
 }

@@ -45,7 +45,20 @@ public class APIRepo {
     }
 
 
+    public void postNewsFeed(FeedData feedData){
+        webservice.postNewsFeed(feedData).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if(response.isSuccessful())
+                    Log.d("succesful", response.body());
+            }
 
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.d("posterror", t.toString());
+            }
+        });
+    }
 
 
     public LiveData<List<FeedData>> getFeedListLiveData(String userLogin){

@@ -1,4 +1,4 @@
-package com.mksoft.sns_project.Activity;
+package com.mksoft.sns_project.Activity.NewsFeed;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -1,11 +1,17 @@
-package com.mksoft.sns_project.Activity;
+package com.mksoft.sns_project.Activity.NewsFeed;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
@@ -15,7 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mksoft.sns_project.Activity.AddFeed.AddNewsFeedActivity;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
@@ -34,6 +40,7 @@ import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
 
 public class NewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
+    Intent intent;
     String userID;
     HideKeyboard hideKeyboard;
     BackPressCloseHandler backPressCloseHandler;
@@ -74,14 +81,26 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     RecyclerView.LayoutManager layoutManager;
     NewsFeedAdapter feedAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
-    FloatingActionButton fab;
     ImageView userImag;
-    TextView userName;
-
-    String userNameS;
-
-
-
+    RelativeLayout newsfeedLayout;
+    ImageView feedAddButton;
+    Toolbar toolbar;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar_action, menu) ;
+        return true ;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_DM :
+                Toast.makeText(getApplicationContext(),"DM",Toast.LENGTH_LONG).show();
+                return true;
+            default :
+                Toast.makeText(getApplicationContext(), "camera", Toast.LENGTH_LONG).show();
+                return super.onOptionsItemSelected(item) ;
+        }
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +110,14 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         this.configureViewModel();
         newsFeedActivity = this;
         init();
+        clickHideKeyboard();
+        clickFeedAddButton();
     }
     void receiveID(){
         userID = "mkjw";//로그인 페이지에서 받아오기
     }
     private void init(){
+
         hideKeyboard = new HideKeyboard(this);
         backPressCloseHandler = new BackPressCloseHandler(this);
 
@@ -108,9 +130,14 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
             }
         });
 
-        fab = findViewById(R.id.fab_main);
+        toolbar = findViewById(R.id.app_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//홈버튼 활성화
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.camera);
+        feedAddButton = findViewById(R.id.feedAddButton);
+        newsfeedLayout = findViewById(R.id.newsfeedLayout);
         userImag = (ImageView)findViewById(R.id.userIMG);
-        userName = (TextView)findViewById(R.id.userInfoTextView);
         recyclerView = (RecyclerView)findViewById(R.id.feedRecyclerView);
         layoutManager = new LinearLayoutManager(getApplicationContext());
 
@@ -123,6 +150,16 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         recyclerView.setLayoutManager(layoutManager);
 
     }
+    private void clickFeedAddButton(){
+        feedAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent = new Intent(getApplicationContext(), AddNewsFeedActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
+    }//추가페이지로 넘어가는 버튼
     private void updateUser(UserData user){
         if (user != null){
 
@@ -132,8 +169,6 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
                 Glide.with(this).load(user.getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(userImag);
             }
-            this.userName.setText(user.getName());
-            userNameS = user.getName();
 
         }
     }
@@ -141,6 +176,19 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         feedAdapter.updateNewsFeed(feedData);
     }
 
+    private void clickHideKeyboard(){
+        newsfeedLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getHideKeyboard().hideKeyboard();
+            }
+        });
+    }
+
+    //키보드 숨기기
+    public HideKeyboard getHideKeyboard(){
+        return hideKeyboard;
+    }
 
     //뒤로가기 버튼
     public interface onKeyBackPressedListener{

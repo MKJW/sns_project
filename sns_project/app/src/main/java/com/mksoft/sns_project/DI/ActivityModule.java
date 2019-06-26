@@ -1,7 +1,8 @@
 package com.mksoft.sns_project.DI;
 
 
-import com.mksoft.sns_project.Activity.NewsFeedActivity;
+import com.mksoft.sns_project.Activity.AddFeed.AddNewsFeedActivity;
+import com.mksoft.sns_project.Activity.NewsFeed.NewsFeedActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -18,4 +19,6 @@ public abstract class ActivityModule {
     abstract NewsFeedActivity contributeNewsFeedActivity();//여러개의 액티비티중에 그중에 MainAcrivity를 주입
 
 
+    @ContributesAndroidInjector
+    abstract AddNewsFeedActivity cotributeAddNewsFeedActivity();
 }

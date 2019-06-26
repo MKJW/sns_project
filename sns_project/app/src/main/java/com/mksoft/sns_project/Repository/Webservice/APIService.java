@@ -9,6 +9,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
@@ -20,6 +21,10 @@ public interface APIService {
     @GET("/posts/{userID}")
     Call<List<FeedData>> getNewsFeed(
             @Path("userID") String userID
+    );
+    @POST("/posts/save")
+    Call<String> postNewsFeed(
+            @Body FeedData data
     );
 
 

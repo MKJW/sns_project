@@ -50,7 +50,7 @@ public class AppModule {
 
 // --- NETWORK INJECTION ---
 
-    private static String BASE_URL = "";
+    private static String BASE_URL = "http://116.44.253.75:8888";
 
     @Provides
     Gson provideGson() { return new GsonBuilder().create(); }

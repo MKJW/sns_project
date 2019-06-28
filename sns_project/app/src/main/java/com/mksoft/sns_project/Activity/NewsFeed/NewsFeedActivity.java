@@ -7,7 +7,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,8 +27,7 @@ import com.mksoft.sns_project.Repository.DataType.FeedData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.ViewModel.NewsFeedViewModel;
 import com.mksoft.sns_project.ViewModel.UserViewModel;
-import com.mksoft.sns_project.etcMethod.BackPressCloseHandler;
-import com.mksoft.sns_project.etcMethod.HideKeyboard;
+import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
 import java.util.List;
 
@@ -42,10 +40,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class NewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
     Intent intent;
     String userID;
-    HideKeyboard hideKeyboard;
-    BackPressCloseHandler backPressCloseHandler;
-    private onKeyBackPressedListener mOnKeyBackPressedListener;
-
+    EtcMethodClass etcMethodClass;
     public static NewsFeedActivity newsFeedActivity;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -110,16 +105,17 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         this.configureViewModel();
         newsFeedActivity = this;
         init();
-        clickHideKeyboard();
+        etcMethodClass = new EtcMethodClass(this, newsfeedLayout);
+        etcMethodClass.clickHideKeyboard();
         clickFeedAddButton();
+        clickUserIMGButton();
     }
     void receiveID(){
         userID = "mkjw";//로그인 페이지에서 받아오기
     }
     private void init(){
 
-        hideKeyboard = new HideKeyboard(this);
-        backPressCloseHandler = new BackPressCloseHandler(this);
+
 
         mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -160,6 +156,14 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
             }
         });
     }//추가페이지로 넘어가는 버튼
+    private void clickUserIMGButton(){
+        userImag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+            }
+        });
+    }//유저정보로 넘어가는 버튼
     private void updateUser(UserData user){
         if (user != null){
 
@@ -176,40 +180,13 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         feedAdapter.updateNewsFeed(feedData);
     }
 
-    private void clickHideKeyboard(){
-        newsfeedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getHideKeyboard().hideKeyboard();
-            }
-        });
-    }
 
-    //키보드 숨기기
-    public HideKeyboard getHideKeyboard(){
-        return hideKeyboard;
-    }
 
-    //뒤로가기 버튼
-    public interface onKeyBackPressedListener{
-        void onBackKey();
-    }
-    public void setOnKeyBackPressedListener(onKeyBackPressedListener listener){
-        mOnKeyBackPressedListener = listener;
-    }
-    @Override
-    public void onBackPressed() {
-        if(mOnKeyBackPressedListener != null) {
-            mOnKeyBackPressedListener.onBackKey();
-        }else{
-            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-                backPressCloseHandler.onBackPressed();
-            }
-            else{
-                super.onBackPressed();
-            }
-        }
-    }
+
+
+
+
+
 
 
 }

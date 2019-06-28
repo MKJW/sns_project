@@ -23,12 +23,10 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
-import com.mksoft.sns_project.Activity.NewsFeed.NewsFeedActivity;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
-import com.mksoft.sns_project.etcMethod.BackPressCloseHandler;
-import com.mksoft.sns_project.etcMethod.HideKeyboard;
+import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,12 +40,9 @@ import dagger.android.support.HasSupportFragmentInjector;
 public class AddNewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
     String userID;
-    HideKeyboard hideKeyboard;
-    BackPressCloseHandler backPressCloseHandler;
-    private NewsFeedActivity.onKeyBackPressedListener mOnKeyBackPressedListener;
 
+    EtcMethodClass etcMethodClass;
 
-    private Boolean isPermission = true;
     private static final int PICK_FROM_ALBUM = 1;
     Uri photoUri;
     File tempFile;
@@ -72,7 +67,6 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
     ImageView addImageView;
     boolean imageState = false;
     Toolbar toolbar;
-    Button button;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_add_page_action, menu) ;
@@ -101,14 +95,12 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         this.configureDagger();
         addNewsFeedActivity = this;
         init();
-        tedPermission();
-        clickHideKeyboard();
+        etcMethodClass = new EtcMethodClass(this, addNewsFeedLayout);
+        etcMethodClass.tedPermission();
+        etcMethodClass.clickHideKeyboard();
         clickAddImageView();
     }
     void init(){
-
-        hideKeyboard = new HideKeyboard(this);
-        backPressCloseHandler = new BackPressCloseHandler(this);
 
 
         Intent intent = getIntent();
@@ -124,50 +116,18 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         addImageView = findViewById(R.id.addImageView);
 
     }
-    private void clickHideKeyboard(){
-        addNewsFeedLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getHideKeyboard().hideKeyboard();
-            }
-        });
-    }
+
     private void clickAddImageView(){
         addImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isPermission){
+                if(etcMethodClass.getPermission()){
                     goToAlbum();
                 }else{
                     Toast.makeText(getApplicationContext(), "권한을 먼저 승인해 주세여.", Toast.LENGTH_LONG).show();
                 }
             }
         });
-    }
-    //키보드 숨기기
-    public HideKeyboard getHideKeyboard(){
-        return hideKeyboard;
-    }
-
-    //뒤로가기 버튼
-    public interface onKeyBackPressedListener{
-        void onBackKey();
-    }
-    public void setOnKeyBackPressedListener(NewsFeedActivity.onKeyBackPressedListener listener){
-        mOnKeyBackPressedListener = listener;
-    }
-    @Override
-    public void onBackPressed() {
-        if(mOnKeyBackPressedListener != null) {
-            mOnKeyBackPressedListener.onBackKey();
-        }else{
-            if(getSupportFragmentManager().getBackStackEntryCount() == 0){
-                backPressCloseHandler.onBackPressed();
-            }
-            else{
-                super.onBackPressed();
-            }
-        }
     }
 
 
@@ -226,32 +186,6 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }
-    //권한 요청
-    private void tedPermission() {
 
-        PermissionListener permissionListener = new PermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                // 권한 요청 성공
-                isPermission = true;
-
-            }
-
-            @Override
-            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
-                // 권한 요청 실패
-                isPermission = false;
-
-            }
-        };
-
-        TedPermission.with(this)
-                .setPermissionListener(permissionListener)
-                .setRationaleMessage("카메라 권한, 쓰기 권한 필요해요.")
-                .setDeniedMessage("권한 거부하셨습니다. 설정에가서 변경해주세요.")
-                .setPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
-                .check();
-
-    }
 
 }

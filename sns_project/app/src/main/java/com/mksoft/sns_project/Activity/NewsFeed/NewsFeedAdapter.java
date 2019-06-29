@@ -21,18 +21,18 @@ import java.util.List;
 
 public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView userNameTextView;
-        ImageView feedImageView;
-        ImageView regestUserImg;
-        TextView feedContentsTextView;
-        TextView feedLike;
+        TextView news_feed_item_user_name_textView;
+        ImageView news_feed_item_feed_imageView;
+        ImageView news_feed_item_register_imageView;
+        TextView news_feed_item_contents_textView;
+        TextView news_feed_item_like_textView;
         MyViewHolder(View view){
             super(view);
-            userNameTextView = view.findViewById(R.id.userNameTextView);
-            feedImageView = view.findViewById(R.id.feedImageView);
-            feedContentsTextView = view.findViewById(R.id.feedContentsTextView);
-            feedLike = view.findViewById(R.id.feedLikeTextView);
-            regestUserImg = view.findViewById(R.id.regestUserImg);
+            news_feed_item_user_name_textView = view.findViewById(R.id.news_feed_item_user_name_textView);
+            news_feed_item_feed_imageView = view.findViewById(R.id.news_feed_item_feed_imageView);
+            news_feed_item_contents_textView = view.findViewById(R.id.news_feed_item_contents_textView);
+            news_feed_item_like_textView = view.findViewById(R.id.news_feed_item_like_textView);
+            news_feed_item_register_imageView = view.findViewById(R.id.news_feed_item_register_imageView);
 
         }
     }
@@ -60,15 +60,15 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         myViewHolder = (MyViewHolder) holder;
-        myViewHolder.userNameTextView.setText(items.get(position).getWriter());
+        myViewHolder.news_feed_item_user_name_textView.setText(items.get(position).getWriter());
         //Glide.with(context).load(items.get(position).getFeedImgUrl()).into(myViewHolder.feedImageView);
-        myViewHolder.feedContentsTextView.setText(items.get(position).getContent());
-        myViewHolder.feedLike.setText("좋아요 "+(items.get(position).getNumOfLikes())+"개");
+        myViewHolder.news_feed_item_contents_textView.setText(items.get(position).getContent());
+        myViewHolder.news_feed_item_like_textView.setText("좋아요 "+(items.get(position).getNumOfLikes())+"개");
         if(items.get(position).getUserImgUrl() == null||items.get(position).getUserImgUrl().length() == 0){
-            Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.regestUserImg);
+            Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.news_feed_item_register_imageView);
         }else{
 
-            Glide.with(context).load(items.get(position).getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(myViewHolder.regestUserImg);
+            Glide.with(context).load(items.get(position).getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(myViewHolder.news_feed_item_register_imageView);
         }
 
 

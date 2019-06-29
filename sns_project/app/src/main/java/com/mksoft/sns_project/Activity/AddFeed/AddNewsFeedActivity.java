@@ -62,11 +62,11 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         AndroidInjection.inject(this);
     }
 
-    RelativeLayout addNewsFeedLayout;
-    EditText feedContentsTextView;
-    ImageView addImageView;
+    RelativeLayout add_news_feed_layout;
+    EditText add_news_feed_feed_contents_editText;
+    ImageView add_news_feed_add_imageView;
     boolean imageState = false;
-    Toolbar toolbar;
+    Toolbar add_news_feed_toolbar;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_add_page_action, menu) ;
@@ -77,7 +77,7 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         switch (item.getItemId()) {
             case R.id.action_share :
                 FeedData feedData = new FeedData();
-                feedData.setContent(feedContentsTextView.getText().toString());
+                feedData.setContent(add_news_feed_feed_contents_editText.getText().toString());
                 feedData.setNumOfLikes(0);
                 feedData.setWriter(userID);
                 apiRepo.postNewsFeed(feedData);
@@ -95,7 +95,7 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         this.configureDagger();
         addNewsFeedActivity = this;
         init();
-        etcMethodClass = new EtcMethodClass(this, addNewsFeedLayout);
+        etcMethodClass = new EtcMethodClass(this, add_news_feed_layout);
         etcMethodClass.tedPermission();
         etcMethodClass.clickHideKeyboard();
         clickAddImageView();
@@ -106,19 +106,19 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         Intent intent = getIntent();
         userID = intent.getExtras().getString("userID");//사용자 정보
 
-        toolbar = findViewById(R.id.add_page_toolbar);
-        setSupportActionBar(toolbar);
+        add_news_feed_toolbar = findViewById(R.id.add_news_feed_toolbar);
+        setSupportActionBar(add_news_feed_toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//홈버튼 활성화
 
-        addNewsFeedLayout = findViewById(R.id.addNewsFeedLayout);
-        feedContentsTextView = findViewById(R.id.feedContentsTextView);
-        addImageView = findViewById(R.id.addImageView);
+        add_news_feed_layout = findViewById(R.id.add_news_feed_layout);
+        add_news_feed_feed_contents_editText = findViewById(R.id.add_news_feed_feed_contents_editText);
+        add_news_feed_add_imageView = findViewById(R.id.add_news_feed_add_imageView);
 
     }
 
     private void clickAddImageView(){
-        addImageView.setOnClickListener(new View.OnClickListener() {
+        add_news_feed_add_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(etcMethodClass.getPermission()){
@@ -149,7 +149,7 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
             if(data == null)
                 return;
             photoUri = data.getData();
-            Glide.with(this).load(photoUri).into(addImageView);
+            Glide.with(this).load(photoUri).into(add_news_feed_add_imageView);
             Cursor cursor = null;
             imageState = true;
             try {

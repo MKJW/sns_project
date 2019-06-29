@@ -72,14 +72,14 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
     }
 
-    RecyclerView recyclerView;
+    RecyclerView news_feed_feed_RecyclerView;
     RecyclerView.LayoutManager layoutManager;
     NewsFeedAdapter feedAdapter;
-    SwipeRefreshLayout mSwipeRefreshLayout;
-    ImageView userImag;
-    RelativeLayout newsfeedLayout;
-    ImageView feedAddButton;
-    Toolbar toolbar;
+    SwipeRefreshLayout news_feed_swipe_layout;
+    ImageView news_feed_user_feed_button;
+    RelativeLayout news_feed_layout;
+    ImageView news_feed_add_feed_button;
+    Toolbar news_feed_toolbar;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_action, menu) ;
@@ -105,7 +105,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         this.configureViewModel();
         newsFeedActivity = this;
         init();
-        etcMethodClass = new EtcMethodClass(this, newsfeedLayout);
+        etcMethodClass = new EtcMethodClass(this, news_feed_layout);
         etcMethodClass.clickHideKeyboard();
         clickFeedAddButton();
         clickUserIMGButton();
@@ -117,37 +117,37 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
 
 
-        mSwipeRefreshLayout = findViewById(R.id.swipe_layout);
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        news_feed_swipe_layout = findViewById(R.id.news_feed_swipe_layout);
+        news_feed_swipe_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 apiRepo.getFeedListLiveData(userID);
-                mSwipeRefreshLayout.setRefreshing(false);
+                news_feed_swipe_layout.setRefreshing(false);
             }
         });
 
-        toolbar = findViewById(R.id.app_toolbar);
-        setSupportActionBar(toolbar);
+        news_feed_toolbar = findViewById(R.id.news_feed_toolbar);
+        setSupportActionBar(news_feed_toolbar);
         getSupportActionBar().setTitle(null);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);//홈버튼 활성화
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.camera);
-        feedAddButton = findViewById(R.id.feedAddButton);
-        newsfeedLayout = findViewById(R.id.newsfeedLayout);
-        userImag = (ImageView)findViewById(R.id.userIMG);
-        recyclerView = (RecyclerView)findViewById(R.id.feedRecyclerView);
+        news_feed_add_feed_button = findViewById(R.id.news_feed_add_feed_button);
+        news_feed_layout = findViewById(R.id.news_feed_layout);
+        news_feed_user_feed_button = (ImageView)findViewById(R.id.news_feed_user_feed_button);
+        news_feed_feed_RecyclerView = (RecyclerView)findViewById(R.id.news_feed_feed_RecyclerView);
         layoutManager = new LinearLayoutManager(getApplicationContext());
 
         initListView();
     }
     private void initListView(){
-        recyclerView.setHasFixedSize(true);
+        news_feed_feed_RecyclerView.setHasFixedSize(true);
         feedAdapter = new NewsFeedAdapter(getApplicationContext());
-        recyclerView.setAdapter(feedAdapter);
-        recyclerView.setLayoutManager(layoutManager);
+        news_feed_feed_RecyclerView.setAdapter(feedAdapter);
+        news_feed_feed_RecyclerView.setLayoutManager(layoutManager);
 
     }
     private void clickFeedAddButton(){
-        feedAddButton.setOnClickListener(new View.OnClickListener() {
+        news_feed_add_feed_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), AddNewsFeedActivity.class);
@@ -157,7 +157,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         });
     }//추가페이지로 넘어가는 버튼
     private void clickUserIMGButton(){
-        userImag.setOnClickListener(new View.OnClickListener() {
+        news_feed_user_feed_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
@@ -168,10 +168,10 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         if (user != null){
 
             if(user.getUserImgUrl() == null||user.getUserImgUrl().length() == 0){
-                Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(userImag);
+                Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(news_feed_user_feed_button);
             }else{
 
-                Glide.with(this).load(user.getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(userImag);
+                Glide.with(this).load(user.getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(news_feed_user_feed_button);
             }
 
         }

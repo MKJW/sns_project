@@ -15,6 +15,8 @@ import dagger.android.HasActivityInjector;
 
 public class App extends Application implements HasActivityInjector {
     public static Context context;
+    public static String BASE_URL = "";//서버 변수
+    public static String userID = "MKJW";//로그인할 경우 루트권한을 갖는 사용자 아이디로 초기화
     @Inject
     DispatchingAndroidInjector<Activity> dispatchingAndroidInjector;
 

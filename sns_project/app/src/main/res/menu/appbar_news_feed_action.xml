@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_DM"
+        android:id="@+id/news_feed_DM_button"
         android:icon="@drawable/paper_plane"
         android:title="DM"
         app:showAsAction="always"/>

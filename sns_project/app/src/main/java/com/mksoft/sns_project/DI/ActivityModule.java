@@ -3,6 +3,7 @@ package com.mksoft.sns_project.DI;
 
 import com.mksoft.sns_project.Activity.AddFeed.AddNewsFeedActivity;
 import com.mksoft.sns_project.Activity.NewsFeed.NewsFeedActivity;
+import com.mksoft.sns_project.Activity.UserFeed.UserFeedActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -21,4 +22,7 @@ public abstract class ActivityModule {
 
     @ContributesAndroidInjector
     abstract AddNewsFeedActivity cotributeAddNewsFeedActivity();
+
+    @ContributesAndroidInjector
+    abstract UserFeedActivity contributeUserFeedActivity();
 }

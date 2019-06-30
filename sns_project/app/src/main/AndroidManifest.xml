@@ -26,6 +26,9 @@
             android:parentActivityName=".Activity.NewsFeed.NewsFeedActivity">
 
         </activity>
+        <activity android:name=".Activity.UserFeed.UserFeedActivity">
+        </activity>
+
 
     </application>
 

@@ -34,7 +34,6 @@
         android:id="@+id/news_feed_swipe_layout">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_margin="10dp"
 
             android:id="@+id/news_feed_feed_RecyclerView"
             android:layout_width="match_parent"

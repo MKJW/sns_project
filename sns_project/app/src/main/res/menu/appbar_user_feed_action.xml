@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_share"
-        android:title="공유"
+        android:id="@+id/user_feed_setting_button"
+        android:icon="@drawable/three_line"
+        android:title="setting"
         app:showAsAction="always"/>
+
 </menu>

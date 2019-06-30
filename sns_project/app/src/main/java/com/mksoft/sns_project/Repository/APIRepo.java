@@ -25,7 +25,7 @@ import retrofit2.Response;
 
 @Singleton
 public class APIRepo {
-    private static int FRESH_TIMEOUT_IN_MINUTES = 8;
+    private static int FRESH_TIMEOUT_IN_SECONDS = 15;
 
     private final APIService webservice;
     private final UserDataDao userDao;
@@ -144,7 +144,8 @@ public class APIRepo {
     private Date getMaxRefreshTime(Date currentDate){
         Calendar cal = Calendar.getInstance();
         cal.setTime(currentDate);
-        cal.add(Calendar.SECOND, -FRESH_TIMEOUT_IN_MINUTES);//현제 시간에서 FRESH_TIMEOUT_IN_MINUTES() 전 시간을 불러온다.
+        cal.add(Calendar.SECOND, -FRESH_TIMEOUT_IN_SECONDS);//현제 시간에서 FRESH_TIMEOUT_IN_MINUTES() 전 시간을 불러온다.
+        //15초 안에 같은 요청은 내부 디비 보내기
         return cal.getTime();
     }
 

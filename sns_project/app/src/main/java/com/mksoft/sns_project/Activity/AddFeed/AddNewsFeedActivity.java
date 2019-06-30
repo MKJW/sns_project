@@ -1,6 +1,5 @@
 package com.mksoft.sns_project.Activity.AddFeed;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -10,7 +9,6 @@ import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,15 +19,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
-import com.gun0912.tedpermission.PermissionListener;
-import com.gun0912.tedpermission.TedPermission;
+import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
 import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -39,13 +35,12 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public class AddNewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
-    String userID;
-
     EtcMethodClass etcMethodClass;
 
     private static final int PICK_FROM_ALBUM = 1;
     Uri photoUri;
     File tempFile;
+    boolean imageState = false;
 
 
 
@@ -61,25 +56,27 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
     private void configureDagger(){
         AndroidInjection.inject(this);
     }
-
+    //xml레이아웃
+    //전체레이아웃
     RelativeLayout add_news_feed_layout;
+    //툴바레이아웃
+    Toolbar add_news_feed_toolbar;
+    //게시물작성 레이아웃
     EditText add_news_feed_feed_contents_editText;
     ImageView add_news_feed_add_imageView;
-    boolean imageState = false;
-    Toolbar add_news_feed_toolbar;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.appbar_add_page_action, menu) ;
+        getMenuInflater().inflate(R.menu.appbar_add_news_feed_action, menu) ;
         return true ;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_share :
+            case R.id.add_news_feed_send_to_server_button :
                 FeedData feedData = new FeedData();
                 feedData.setContent(add_news_feed_feed_contents_editText.getText().toString());
                 feedData.setNumOfLikes(0);
-                feedData.setWriter(userID);
+                feedData.setWriter(App.userID);
                 apiRepo.postNewsFeed(feedData);
                 return true;
             default :
@@ -102,9 +99,6 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
     }
     void init(){
 
-
-        Intent intent = getIntent();
-        userID = intent.getExtras().getString("userID");//사용자 정보
 
         add_news_feed_toolbar = findViewById(R.id.add_news_feed_toolbar);
         setSupportActionBar(add_news_feed_toolbar);
@@ -129,7 +123,6 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
             }
         });
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

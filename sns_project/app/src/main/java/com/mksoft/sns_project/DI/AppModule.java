@@ -7,6 +7,7 @@ import androidx.room.Room;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DB.AppDB;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
@@ -50,7 +51,6 @@ public class AppModule {
 
 // --- NETWORK INJECTION ---
 
-    private static String BASE_URL = "http://116.44.253.75:8888";
 
     @Provides
     Gson provideGson() { return new GsonBuilder().create(); }
@@ -59,8 +59,9 @@ public class AppModule {
     Retrofit provideRetrofit(Gson gson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create(gson))
-                .baseUrl(BASE_URL)
+                .baseUrl(App.BASE_URL)
                 .build();
+
         return retrofit;
     }
 

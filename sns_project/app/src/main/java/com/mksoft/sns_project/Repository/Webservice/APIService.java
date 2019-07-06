@@ -14,7 +14,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface APIService {
-    @GET("/posts/{userID}")
+    @GET("/user/{userID}")
     Call<UserData> getUser(
             @Path("userID") String userID);
 

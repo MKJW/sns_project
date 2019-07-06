@@ -2,12 +2,14 @@ package com.mksoft.sns_project.Repository.DataType;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class UserData {
@@ -16,25 +18,53 @@ public class UserData {
     @PrimaryKey
     @NonNull
     @SerializedName("id")
+    private Integer id = 0;
+
+
+    @SerializedName("userId")
+    @NonNull
+    private String userId="";
+
+    @SerializedName("username")
+    @NonNull
+    private String username = "";
+
+
+    @SerializedName("email")
     @Expose
-    private String id ="";
+    private String email = "";
 
 
-    @SerializedName("name")
+    @SerializedName("userImageUrl")
     @Expose
-    private String name="";
+    private String userImageUrl="";
 
 
-    @SerializedName("user_img_url")
+    @SerializedName("website")
     @Expose
-    private String userImgUrl="";
+    private String website = "";
+
+    @SerializedName("phoneNumber")
+    @Expose
+    private String phoneNumber = "";
+
+    @SerializedName("gender")
+    @Expose
+    private String gender = "";
+
+
 
     private Date lastRefresh = null;
 
-    public UserData(@NonNull String id, String name, String userImgUrl, Date lastRefresh) {
+    public UserData(@NonNull Integer id, @NonNull String userId, @NonNull String username, String email, String userImageUrl, String website, String phoneNumber, String gender, Date lastRefresh) {
         this.id = id;
-        this.name = name;
-        this.userImgUrl = userImgUrl;
+        this.userId = userId;
+        this.username = username;
+        this.email = email;
+        this.userImageUrl = userImageUrl;
+        this.website = website;
+        this.phoneNumber = phoneNumber;
+        this.gender = gender;
         this.lastRefresh = lastRefresh;
     }
 
@@ -48,26 +78,82 @@ public class UserData {
         this.lastRefresh = lastRefresh;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
+    public String getUserId() {
+        return userId;
     }
 
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
-    public String getUserImgUrl() {
-        return userImgUrl;
+    public String getUsername() {
+        return username;
     }
-    public void setUserImgUrl(String userImgUrl) {
-        this.userImgUrl = userImgUrl;
+
+    public void setUsername(String username) {
+        this.username = username;
     }
+
+    public String getUserImageUrl() {
+        return userImageUrl;
+    }
+
+    public void setUserImageUrl(String userImageUrl) {
+        this.userImageUrl = userImageUrl;
+    }
+
+    public String getWebsite() {
+        return website;
+    }
+
+    public void setWebsite(String website) {
+        this.website = website;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "UserData{" +
+                "id='" + String.valueOf(id) + '\'' +
+                ", userId='" + userId + '\'' +
+                ", username='" + username + '\'' +
+                ", userImageUrl='" + userImageUrl + '\'' +
+                ", website='" + website + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", gender='" + gender + '\'' +
+                ", email='" + email + '\'' +
+                ", lastRefresh=" + lastRefresh +
+                '}';
+    }
+
 }

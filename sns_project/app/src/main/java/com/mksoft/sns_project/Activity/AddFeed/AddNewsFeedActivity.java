@@ -35,6 +35,7 @@ import dagger.android.support.HasSupportFragmentInjector;
 
 public class AddNewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
+    Intent intent;
     EtcMethodClass etcMethodClass;
 
     private static final int PICK_FROM_ALBUM = 1;
@@ -99,6 +100,7 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
     }
     void init(){
 
+        intent = new Intent(Intent.ACTION_PICK);
 
         add_news_feed_toolbar = findViewById(R.id.add_news_feed_toolbar);
         setSupportActionBar(add_news_feed_toolbar);
@@ -175,7 +177,6 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
 
     private void goToAlbum() {
 
-        Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType(MediaStore.Images.Media.CONTENT_TYPE);
         startActivityForResult(intent, PICK_FROM_ALBUM);
     }

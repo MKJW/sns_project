@@ -77,6 +77,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     //바텀레이아웃
     ImageView user_feed_home_button;
     ImageView user_feed_add_feed_button;
+    ImageView user_feed_user_feed_button;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_user_feed_action, menu) ;
@@ -125,6 +126,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
 
         user_feed_home_button = findViewById(R.id.user_feed_home_button);
         user_feed_add_feed_button = findViewById(R.id.user_feed_add_feed_button);
+        user_feed_user_feed_button = findViewById(R.id.user_feed_user_feed_button);
 
 
     }
@@ -149,14 +151,19 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     }
     private void updateUser(UserData user){
         if (user != null){
-            if(user.getUserImgUrl() == null||user.getUserImgUrl().length() == 0){
+            if(user.getUserImageUrl() == null||String.valueOf(user.getUserImageUrl()).length() == 0){
                 Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(user_feed_profile_imageView);
+                Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(user_feed_user_feed_button);
+
             }else{
 
-                Glide.with(this).load(user.getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(user_feed_profile_imageView);
+                Glide.with(this).load(App.BASE_URL+"/files/"+user.getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(user_feed_profile_imageView);
+                Glide.with(this).load(App.BASE_URL+"/files/"+user.getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(user_feed_user_feed_button);
             }
 
         }//프로필 사진 초기화
         //초기화 과정이 필요
+        user_feed_profile_name_textView.setText(String.valueOf(user.getUsername()));
+
     }
 }

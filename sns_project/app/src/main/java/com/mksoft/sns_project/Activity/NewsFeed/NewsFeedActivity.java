@@ -88,7 +88,6 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     //바텀 레이아웃
     ImageView news_feed_add_feed_button;
     ImageView news_feed_user_feed_button;
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_news_feed_action, menu) ;
@@ -178,11 +177,13 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
     private void updateUser(UserData user){
         if (user != null){
-            if(user.getUserImgUrl() == null||user.getUserImgUrl().length() == 0){
+            if(user.getUserImageUrl() == null||String.valueOf(user.getUserImageUrl()).length() == 0){
                 Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(news_feed_user_feed_button);
+
             }else{
 
-                Glide.with(this).load(user.getUserImgUrl()).apply(RequestOptions.circleCropTransform()).into(news_feed_user_feed_button);
+                Glide.with(this).load(App.BASE_URL+"/files/"+user.getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(news_feed_user_feed_button);
+
             }
 
         }

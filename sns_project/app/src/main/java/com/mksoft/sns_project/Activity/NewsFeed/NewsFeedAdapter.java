@@ -1,6 +1,8 @@
 package com.mksoft.sns_project.Activity.NewsFeed;
 
 import android.content.Context;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
 
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -64,7 +67,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
         myViewHolder = (MyViewHolder) holder;
         myViewHolder.news_feed_item_user_name_textView.setText(items.get(position).getWriter());
-        Glide.with(context).load(items.get(position).getFeedImgUrl()).into(myViewHolder.news_feed_item_feed_imageView);
+        Glide.with(context).load((App.BASE_URL+"/files/"+items.get(position))).into(myViewHolder.news_feed_item_feed_imageView);
         myViewHolder.news_feed_item_contents_textView.setText(items.get(position).getContent());
         myViewHolder.news_feed_item_like_textView.setText("좋아요 "+(items.get(position).getNumOfLikes())+"개");
         if(items.get(position).getUserImgUrl() == null||items.get(position).getUserImgUrl().length() == 0){

@@ -46,9 +46,8 @@
                 android:layout_height="wrap_content">
                 <ImageView
                     android:id="@+id/user_feed_profile_imageView"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/home_white"/>
+                    android:layout_width="95dp"
+                    android:layout_height="95dp"/>
                 <LinearLayout
                     android:layout_toRightOf="@+id/user_feed_profile_imageView"
                     android:layout_width="match_parent"
@@ -198,12 +197,15 @@
             android:layout_height="30dp"
             android:src="@drawable/like"
             android:layout_weight="1"/>
-        <ImageView
-            android:id="@+id/user_feed_user_feed_button"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_weight="1"
-            />
+            <ImageView
+                android:id="@+id/user_feed_user_feed_button"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_weight="1"
+
+                />
+
+
     </LinearLayout>
 
 </RelativeLayout>

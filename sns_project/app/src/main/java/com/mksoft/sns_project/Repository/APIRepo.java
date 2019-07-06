@@ -1,7 +1,6 @@
 package com.mksoft.sns_project.Repository;
 
 
-import android.service.autofill.UserData;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -9,6 +8,7 @@ import androidx.lifecycle.LiveData;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
 import com.mksoft.sns_project.Repository.DB.UserDataDao;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
+import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.Repository.Webservice.APIService;
 
 import java.util.Calendar;
@@ -83,7 +83,11 @@ public class APIRepo {
                         executor.execute(() -> {
                             List<FeedData> feedDataList = response.body();
                             for(int i =0; i<feedDataList.size(); i++){
-                                Log.d("test190509", feedDataList.get(i).getWriter());
+                                if(feedDataList.get(i).getFeedImgUrl()==null)
+                                    Log.d("test190509", "tete");
+                                else{
+                                    Log.d("test190509", feedDataList.get(i).getFeedImgUrl());
+                                }
                                 feedDataList.get(i).setLastRefresh(new Date());
 
                             }
@@ -119,20 +123,22 @@ public class APIRepo {
 
             // If user have to be updated
             if (!userExists) {
-                webservice.getUser(userLogin).enqueue(new Callback<com.mksoft.sns_project.Repository.DataType.UserData>() {
+                webservice.getUser(userLogin).enqueue(new Callback<UserData>() {
                     @Override
-                    public void onResponse(Call<com.mksoft.sns_project.Repository.DataType.UserData> call, Response<com.mksoft.sns_project.Repository.DataType.UserData> response) {
+                    public void onResponse(Call<UserData> call, Response<UserData> response) {
 
                         executor.execute(() -> {
-                            com.mksoft.sns_project.Repository.DataType.UserData user = response.body();
+                            UserData user = response.body();
+                            Log.d("test0706", user.toString());
+
                             user.setLastRefresh(new Date());
                             userDao.save(user);
                         });
                     }
 
                     @Override
-                    public void onFailure(Call<com.mksoft.sns_project.Repository.DataType.UserData> call, Throwable t) {
-
+                    public void onFailure(Call<UserData> call, Throwable t) {
+                        Log.d("test0706", t.toString());
                     }
                 });
 

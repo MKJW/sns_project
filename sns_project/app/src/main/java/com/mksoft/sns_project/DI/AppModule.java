@@ -2,6 +2,7 @@ package com.mksoft.sns_project.DI;
 
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.room.Room;
 

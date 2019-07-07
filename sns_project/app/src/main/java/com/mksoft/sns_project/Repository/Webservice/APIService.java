@@ -2,6 +2,7 @@ package com.mksoft.sns_project.Repository.Webservice;
 
 
 import com.mksoft.sns_project.Repository.DataType.FeedData;
+import com.mksoft.sns_project.Repository.DataType.ListData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 
 import java.util.List;
@@ -26,6 +27,10 @@ public interface APIService {
     Call<String> postNewsFeed(
             @Body FeedData data
     );
+    @POST("/user/follower")
+    Call<Void> postTestLongList(
+            @Body ListData listData
+            );
 
 
 }

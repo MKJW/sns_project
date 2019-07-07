@@ -112,6 +112,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
         this.configureDagger();
         this.configureViewModel();
+        //apiRepo.testLongList();//테스트트
         newsFeedActivity = this;
         init();
         etcMethodClass = new EtcMethodClass(this, news_feed_layout);

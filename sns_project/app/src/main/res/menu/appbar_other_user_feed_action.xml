@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/other_user_feed_setting_button"
+        android:icon="@drawable/three_line"
+        android:title="setting"
+        app:showAsAction="always"/>
+
+</menu>

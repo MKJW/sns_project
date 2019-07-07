@@ -164,6 +164,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         }//프로필 사진 초기화
         //초기화 과정이 필요
         user_feed_profile_name_textView.setText(String.valueOf(user.getUsername()));
-
+        user_feed_follower_count_textView.setText(user.getFollowerCnt());
+        user_feed_following_count_textView.setText(user.getFolloweeCnt());
     }
 }

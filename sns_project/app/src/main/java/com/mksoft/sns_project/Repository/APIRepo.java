@@ -8,9 +8,11 @@ import androidx.lifecycle.LiveData;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
 import com.mksoft.sns_project.Repository.DB.UserDataDao;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
+import com.mksoft.sns_project.Repository.DataType.ListData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.Repository.Webservice.APIService;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -43,7 +45,24 @@ public class APIRepo {
         this.executor = executor;
         this.feedDataDao = feedDataDao;
     }
+    public void testLongList(){
+        List<Long> temp = new ArrayList<>();
+        temp.add((long) 1);
+        temp.add((long) 2);
+        ListData qwe = new ListData(temp);
+        webservice.postTestLongList(qwe).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
 
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+
+    }
 
     public void postNewsFeed(FeedData feedData){
         webservice.postNewsFeed(feedData).enqueue(new Callback<String>() {
@@ -109,6 +128,7 @@ public class APIRepo {
     }
 
 
+
     public LiveData<com.mksoft.sns_project.Repository.DataType.UserData> getUserLiveData(String userLogin) {
         refreshUser(userLogin); // try to refresh data if possible from Github Api
         return userDao.getUserLiveData(); // return a LiveData directly from the database.
@@ -129,6 +149,9 @@ public class APIRepo {
 
                         executor.execute(() -> {
                             UserData user = response.body();
+                            user.setFolloweeCnt(user.getFollowee().size());
+                            user.setFollowerCnt(user.getFollower().size());
+
                             Log.d("test0706", user.toString());
 
                             user.setLastRefresh(new Date());
@@ -154,5 +177,7 @@ public class APIRepo {
         //15초 안에 같은 요청은 내부 디비 보내기
         return cal.getTime();
     }
+
+
 
 }

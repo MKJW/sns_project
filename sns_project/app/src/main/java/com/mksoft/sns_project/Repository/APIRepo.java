@@ -7,9 +7,13 @@ import androidx.lifecycle.LiveData;
 
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
 import com.mksoft.sns_project.Repository.DB.UserDataDao;
+import com.mksoft.sns_project.Repository.DB.UserFollowerDataDao;
+import com.mksoft.sns_project.Repository.DB.UserFollowingDataDao;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
 import com.mksoft.sns_project.Repository.DataType.ListData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
+import com.mksoft.sns_project.Repository.DataType.UserFollowerData;
+import com.mksoft.sns_project.Repository.DataType.UserFollowingData;
 import com.mksoft.sns_project.Repository.Webservice.APIService;
 
 import java.util.ArrayList;
@@ -33,17 +37,24 @@ public class APIRepo {
     private final UserDataDao userDao;
     private final Executor executor;
     private final FeedDataDao feedDataDao;
+    private final UserFollowingDataDao userFollowingDataDao;
+    private final UserFollowerDataDao userFollowerDataDao;
 
     @Inject
     public APIRepo(APIService webservice,
                    UserDataDao userDao,
                    FeedDataDao feedDataDao,
+                   UserFollowingDataDao userFollowingDataDao,
+                   UserFollowerDataDao userFollowerDataDao,
                    Executor executor) {
         Log.d("testResultRepo", "make it!!!");
         this.webservice = webservice;
         this.userDao = userDao;
         this.executor = executor;
         this.feedDataDao = feedDataDao;
+        this.userFollowerDataDao = userFollowerDataDao;
+        this.userFollowingDataDao = userFollowingDataDao;
+
     }
     public void testLongList(){
         List<Long> temp = new ArrayList<>();
@@ -154,6 +165,11 @@ public class APIRepo {
                             Log.d("test0706", user.toString());
 
                             user.setLastRefresh(new Date());
+                            userFollowerDataDao.deleteAll();
+                            userFollowingDataDao.deleteAll();//팔로 팔로잉 목록 갱실할 수 있기 때문에
+                            userFollowerDataDao.save(user.getFollower());
+                            userFollowingDataDao.save(user.getFollowee());
+                            //유저 정보에 의존하기때문에 시간 갱신은 필요없어 본인다.
                             userDao.save(user);
                         });
                     }

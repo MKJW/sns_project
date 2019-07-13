@@ -32,7 +32,7 @@ public class UserData {
     @SerializedName("follower")
     @Expose
     @Ignore
-    private List<Long> follower;
+    private List<UserFollowerData> follower;
 
     @SerializedName("followerCnt")
     @Expose
@@ -41,7 +41,7 @@ public class UserData {
     @SerializedName("followee")
     @Expose
     @Ignore
-    private List<Long> followee;
+    private List<UserFollowingData> followee;
 
     @SerializedName("followeeCnt")
     @Expose
@@ -176,11 +176,11 @@ public class UserData {
                 '}';
     }
 
-    public List<Long> getFollower() {
+    public List<UserFollowerData> getFollower() {
         return follower;
     }
 
-    public void setFollower(List<Long> follower) {
+    public void setFollower(List<UserFollowerData> follower) {
         this.follower = follower;
     }
 
@@ -192,11 +192,11 @@ public class UserData {
         this.followerCnt = followerCnt;
     }
 
-    public List<Long> getFollowee() {
+    public List<UserFollowingData> getFollowee() {
         return followee;
     }
 
-    public void setFollowee(List<Long> followee) {
+    public void setFollowee(List<UserFollowingData> followee) {
         this.followee = followee;
     }
 

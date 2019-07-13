@@ -38,6 +38,7 @@ public class OtherUserFeedActivity extends AppCompatActivity implements HasSuppo
     private String otherUserID;
     Intent intent;
     Integer pageState = 0;//0은 로그인한 사용자 1은 외부 사람, 2는 팔로잉한 사람...
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private UserViewModel userViewModel;
@@ -93,7 +94,7 @@ public class OtherUserFeedActivity extends AppCompatActivity implements HasSuppo
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.appbar_other_user_feed_action, menu) ;
-        return true ;
+        return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,10 +115,9 @@ public class OtherUserFeedActivity extends AppCompatActivity implements HasSuppo
 
         this.configureDagger();
         configureViewModel();
+
         otherUserFeedActivity = this;
-
         init();
-
 
         click_other_user_feed_add_feed_button();
     }
@@ -143,7 +143,8 @@ public class OtherUserFeedActivity extends AppCompatActivity implements HasSuppo
         }else{
             other_user_feed_profile_button.setText("팔로우");
             pageState = 1;
-        }
+        }//팔로우 상태인지 아닌지에 따라서 수정
+        //이때 서버에 친구인지 요청하는 방법 OR 내부에 저장된 데이터로 매칭하는 방법
         ohter_user_feed_home_button = findViewById(R.id.other_user_feed_home_button);
         ohter_user_feed_add_feed_button = findViewById(R.id.other_user_feed_add_feed_button);
         ohter_user_feed_user_feed_button = findViewById(R.id.other_user_feed_user_feed_button);
@@ -189,5 +190,5 @@ public class OtherUserFeedActivity extends AppCompatActivity implements HasSuppo
 
         }
 
-    }
+    }//현제 사용자 밑에 라인 사진 업데이트...
 }

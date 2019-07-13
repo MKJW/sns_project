@@ -49,8 +49,7 @@ public class APIRepo {
         List<Long> temp = new ArrayList<>();
         temp.add((long) 1);
         temp.add((long) 2);
-        ListData qwe = new ListData(temp);
-        webservice.postTestLongList(qwe).enqueue(new Callback<Void>() {
+        webservice.postTestLongList(temp).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
 

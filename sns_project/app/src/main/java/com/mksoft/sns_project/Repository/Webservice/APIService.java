@@ -29,8 +29,7 @@ public interface APIService {
     );
     @POST("/user/follower")
     Call<Void> postTestLongList(
-            @Body ListData listData
+            @Body List listData
             );
-
 
 }

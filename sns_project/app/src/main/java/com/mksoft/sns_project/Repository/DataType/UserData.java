@@ -32,7 +32,7 @@ public class UserData {
     @SerializedName("follower")
     @Expose
     @Ignore
-    private List<UserFollowerData> follower;
+    private List<Long> follower;
 
     @SerializedName("followerCnt")
     @Expose
@@ -41,7 +41,7 @@ public class UserData {
     @SerializedName("followee")
     @Expose
     @Ignore
-    private List<UserFollowingData> followee;
+    private List<Long> followee;
 
     @SerializedName("followeeCnt")
     @Expose
@@ -53,6 +53,14 @@ public class UserData {
     @SerializedName("email")
     @Expose
     private String email = "";
+
+    @SerializedName("followeeState")
+    @Expose
+    private boolean followeeState = false;
+
+    @SerializedName("followerState")
+    @Expose
+    private boolean followerState = false;
 
 
     @SerializedName("userImageUrl")
@@ -176,11 +184,11 @@ public class UserData {
                 '}';
     }
 
-    public List<UserFollowerData> getFollower() {
+    public List<Long> getFollower() {
         return follower;
     }
 
-    public void setFollower(List<UserFollowerData> follower) {
+    public void setFollower(List<Long> follower) {
         this.follower = follower;
     }
 
@@ -192,11 +200,11 @@ public class UserData {
         this.followerCnt = followerCnt;
     }
 
-    public List<UserFollowingData> getFollowee() {
+    public List<Long> getFollowee() {
         return followee;
     }
 
-    public void setFollowee(List<UserFollowingData> followee) {
+    public void setFollowee(List<Long> followee) {
         this.followee = followee;
     }
 
@@ -206,5 +214,21 @@ public class UserData {
 
     public void setFolloweeCnt(Integer followeeCnt) {
         this.followeeCnt = followeeCnt;
+    }
+
+    public boolean isFolloweeState() {
+        return followeeState;
+    }
+
+    public void setFolloweeState(boolean followeeState) {
+        this.followeeState = followeeState;
+    }
+
+    public boolean isFollowerState() {
+        return followerState;
+    }
+
+    public void setFollowerState(boolean followerState) {
+        this.followerState = followerState;
     }
 }

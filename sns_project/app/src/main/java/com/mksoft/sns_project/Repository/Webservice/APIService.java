@@ -1,6 +1,8 @@
 package com.mksoft.sns_project.Repository.Webservice;
 
 
+import androidx.core.app.NotificationCompat;
+
 import com.mksoft.sns_project.Repository.DataType.FeedData;
 import com.mksoft.sns_project.Repository.DataType.ListData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
@@ -18,6 +20,15 @@ public interface APIService {
     @GET("/user/{userID}")
     Call<UserData> getUser(
             @Path("userID") String userID);
+
+    @GET("/user/followers")
+    Call<List<UserData>> getFollowers(
+            @Body List<Long> followersList
+    );
+    @GET("/user/followees")
+    Call<List<UserData>> getFollowees(
+            @Body List<Long> followeesList
+    );
 
     @GET("/posts/{userID}")
     Call<List<FeedData>> getNewsFeed(

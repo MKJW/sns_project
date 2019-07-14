@@ -172,14 +172,20 @@ public class UserData {
     @Override
     public String toString() {
         return "UserData{" +
-                "id='" + String.valueOf(id) + '\'' +
+                "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
+                ", follower=" + follower +
+                ", followerCnt=" + followerCnt +
+                ", followee=" + followee +
+                ", followeeCnt=" + followeeCnt +
+                ", email='" + email + '\'' +
+                ", followeeState=" + followeeState +
+                ", followerState=" + followerState +
                 ", userImageUrl='" + userImageUrl + '\'' +
                 ", website='" + website + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", gender='" + gender + '\'' +
-                ", email='" + email + '\'' +
                 ", lastRefresh=" + lastRefresh +
                 '}';
     }

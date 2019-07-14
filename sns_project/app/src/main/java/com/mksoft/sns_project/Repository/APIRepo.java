@@ -46,23 +46,7 @@ public class APIRepo {
         this.feedDataDao = feedDataDao;
 
     }
-    public void testLongList(){
-        List<Long> temp = new ArrayList<>();
-        temp.add((long) 1);
-        temp.add((long) 2);
-        webservice.postTestLongList(temp).enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
 
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-
-            }
-        });
-
-    }
 
     public void postNewsFeed(FeedData feedData){
         webservice.postNewsFeed(feedData).enqueue(new Callback<String>() {
@@ -140,15 +124,18 @@ public class APIRepo {
             @Override
             public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
                 if(response.isSuccessful()){
-                    List<UserData> followeeList = response.body();
-                    for(int i =0; i<followeeList.size(); i++){
-                        followeeList.get(i).setFolloweeState(true);
-                        if(userDao.getUserDataFromUserID(followeeList.get(i).getUserId()) != null)
-                            followeeList.get(i).setFollowerState(true);
-                        userDao.save(followeeList.get(i));
+                    executor.execute(()->{
+                        Log.d("test0714","hi");
+                        List<UserData> followeeList = response.body();
+                        for(int i =0; i<followeeList.size(); i++){
+                            followeeList.get(i).setFolloweeState(true);
+                            if(userDao.getUserDataFromUserID(followeeList.get(i).getUserId()) != null)
+                                followeeList.get(i).setFollowerState(true);
+                            userDao.save(followeeList.get(i));
+                            Log.d("test0714", followeeList.get(i).toString());
+                        }
+                    });
 
-                        Log.d("test0714", followeeList.get(i).getUserId());
-                    }
                 }
             }
 
@@ -159,19 +146,26 @@ public class APIRepo {
         });
     }
     private void refreshFollower(final List<Long> FollowerList, final List<Long> FolloweeList){
+        Log.d("test0714", String.valueOf(FollowerList.size()));
         webservice.getFollowers(FollowerList).enqueue(new Callback<List<UserData>>() {
             @Override
             public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
-                if(response.isSuccessful()){
-                    userDao.deleteOtherUser(App.userID);
-                    List<UserData> followerList = response.body();
-                    for(int i =0; i<followerList.size(); i++){
-                        followerList.get(i).setFollowerState(true);
-                        userDao.save(followerList.get(i));
-                        Log.d("test0714", followerList.get(i).getUserId());
-                    }
+                if(response.body() == null)
+                    Log.d("test0714","null");
 
-                    refreshFollowee(FolloweeList);
+                if(response.isSuccessful()){
+                    executor.execute(()->{
+                        userDao.deleteOtherUser(App.userID);
+                        List<UserData> followerList = response.body();
+                        for(int i =0; i<followerList.size(); i++){
+                            followerList.get(i).setFollowerState(true);
+                            userDao.save(followerList.get(i));
+                            Log.d("test0714", followerList.get(i).toString());
+                        }
+
+                        refreshFollowee(FolloweeList);
+                    });
+
                 }
 
             }

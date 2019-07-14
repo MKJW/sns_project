@@ -15,17 +15,18 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface APIService {
     @GET("/user/{userID}")
     Call<UserData> getUser(
             @Path("userID") String userID);
 
-    @GET("/user/followers")
+    @POST("/user/followers")
     Call<List<UserData>> getFollowers(
             @Body List<Long> followersList
     );
-    @GET("/user/followees")
+    @POST("/user/followees")
     Call<List<UserData>> getFollowees(
             @Body List<Long> followeesList
     );
@@ -38,9 +39,5 @@ public interface APIService {
     Call<String> postNewsFeed(
             @Body FeedData data
     );
-    @POST("/user/follower")
-    Call<Void> postTestLongList(
-            @Body List listData
-            );
 
 }

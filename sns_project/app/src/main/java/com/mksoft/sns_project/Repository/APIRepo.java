@@ -7,8 +7,12 @@ import androidx.lifecycle.LiveData;
 
 import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
+import com.mksoft.sns_project.Repository.DB.FolloweeDataDao;
+import com.mksoft.sns_project.Repository.DB.FollowerDataDao;
 import com.mksoft.sns_project.Repository.DB.UserDataDao;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
+import com.mksoft.sns_project.Repository.DataType.FolloweeData;
+import com.mksoft.sns_project.Repository.DataType.FollowerData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.Repository.Webservice.APIService;
 
@@ -33,17 +37,23 @@ public class APIRepo {
     private final UserDataDao userDao;
     private final Executor executor;
     private final FeedDataDao feedDataDao;
+    private final FollowerDataDao followerDataDao;
+    private final FolloweeDataDao followeeDataDao;
 
     @Inject
     public APIRepo(APIService webservice,
                    UserDataDao userDao,
                    FeedDataDao feedDataDao,
+                   FolloweeDataDao followeeDataDao,
+                   FollowerDataDao followerDataDao,
                    Executor executor) {
         Log.d("testResultRepo", "make it!!!");
         this.webservice = webservice;
         this.userDao = userDao;
         this.executor = executor;
         this.feedDataDao = feedDataDao;
+        this.followerDataDao = followerDataDao;
+        this.followeeDataDao = followeeDataDao;
 
     }
 
@@ -119,20 +129,21 @@ public class APIRepo {
         //라이브데이터를 갖고오는 과정은 쓰래드가 필요 없으니 쓰래드를 사용하지 않는다.
     }
 
-    private void refreshFollowee(final List<Long> FolloweeList){
+    private void refreshFollowee(final List<Long> FolloweeList, String masterID){
         webservice.getFollowees(FolloweeList).enqueue(new Callback<List<UserData>>() {
             @Override
             public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
                 if(response.isSuccessful()){
                     executor.execute(()->{
-                        Log.d("test0714","hi");
-                        List<UserData> followeeList = response.body();
-                        for(int i =0; i<followeeList.size(); i++){
-                            followeeList.get(i).setFolloweeState(true);
-                            if(userDao.getUserDataFromUserID(followeeList.get(i).getUserId()) != null)
-                                followeeList.get(i).setFollowerState(true);
-                            userDao.save(followeeList.get(i));
-                            Log.d("test0714", followeeList.get(i).toString());
+                        followeeDataDao.deleteAllFromMasterID(masterID);
+                        List<UserData> userList = response.body();
+                        FolloweeData followeeData = new FolloweeData();
+                        followeeData.setMasterID(masterID);
+                        for(int i =0; i<userList.size(); i++){
+                            followeeData.setFolloweeID(userList.get(i).getUserId());
+                            followeeData.setFolloweeImgUrl(userList.get(i).getUserImageUrl());
+                            followeeData.setFolloweeName(userList.get(i).getUsername());
+                            followeeDataDao.save(followeeData);
                         }
                     });
 
@@ -145,7 +156,7 @@ public class APIRepo {
             }
         });
     }
-    private void refreshFollower(final List<Long> FollowerList, final List<Long> FolloweeList){
+    private void refreshFollower(final List<Long> FollowerList, String masterID){
         Log.d("test0714", String.valueOf(FollowerList.size()));
         webservice.getFollowers(FollowerList).enqueue(new Callback<List<UserData>>() {
             @Override
@@ -155,17 +166,21 @@ public class APIRepo {
 
                 if(response.isSuccessful()){
                     executor.execute(()->{
-                        userDao.deleteOtherUser(App.userID);
-                        List<UserData> followerList = response.body();
-                        for(int i =0; i<followerList.size(); i++){
-                            followerList.get(i).setFollowerState(true);
-                            userDao.save(followerList.get(i));
-                            Log.d("test0714", followerList.get(i).toString());
+                        followerDataDao.deleteAllFromMasterID(masterID);
+                        List<UserData> userList = response.body();
+
+                        FollowerData followerData = new FollowerData();
+
+                        followerData.setMasterID(masterID);
+                        for(int i =0; i<userList.size(); i++){
+                            followerData.setFollowerID(userList.get(i).getUserId());
+                            followerData.setFollowerImgUrl(userList.get(i).getUserImageUrl());
+                            followerData.setFollowerName(userList.get(i).getUsername());
+
+                            followerDataDao.save(followerData);
+
                         }
-
-                        refreshFollowee(FolloweeList);
                     });
-
                 }
 
             }
@@ -175,7 +190,9 @@ public class APIRepo {
                 Log.d("refreshFollowerErr", t.toString());
             }
         });
-    }
+    }//팔로우나 팔로이 리스트에서 상대방의 간략한 정보를 볼 수 있는 수준의 정보만 저장하여 내부에 저장하자
+    //클릭하여 상대방 정보를 들어간다면 그때 상대 유저에 대한 정보를 갱신해 주자.
+
     private void refreshUser(final String userLogin) {
         executor.execute(() -> {
             // Check if user was fetched recently
@@ -192,9 +209,9 @@ public class APIRepo {
                             UserData user = response.body();
                             user.setFolloweeCnt(user.getFollowee().size());
                             user.setFollowerCnt(user.getFollower().size());
-
+                            refreshFollowee(user.getFollowee(), user.getUserId());
+                            refreshFollower(user.getFollower(), user.getUserId());
                             Log.d("test0706", user.toString());
-                            refreshFollower(user.getFollower(), user.getFollowee());
                             user.setLastRefresh(new Date());
                             //유저 정보에 의존하기때문에 시간 갱신은 필요없어 본인다.
                             userDao.save(user);

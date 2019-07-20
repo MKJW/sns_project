@@ -29,8 +29,6 @@ public interface UserDataDao {
     UserData getUser(Date lastRefreshMax);//일반적인 userdata로 불러오기
     //초기화 기준 시간을 확인하여 불러오기
 
-    @Query("DELETE FROM userdata WHERE userId <>  :userID")
-    void deleteOtherUser(String userID);
 
 
 }

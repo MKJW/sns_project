@@ -12,7 +12,10 @@ import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DB.AppDB;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
+import com.mksoft.sns_project.Repository.DB.FolloweeDataDao;
+import com.mksoft.sns_project.Repository.DB.FollowerDataDao;
 import com.mksoft.sns_project.Repository.DB.UserDataDao;
+import com.mksoft.sns_project.Repository.DataType.FolloweeData;
 import com.mksoft.sns_project.Repository.Webservice.APIService;
 
 import java.util.concurrent.Executor;
@@ -46,6 +49,14 @@ public class AppModule {
     @Provides
     @Singleton
     FeedDataDao provideFeedDao(AppDB database) { return database.feedDataDao(); }
+
+    @Provides
+    @Singleton
+    FolloweeDataDao provideFolloweeDao(AppDB database) { return database.followeeDataDao(); }
+
+    @Provides
+    @Singleton
+    FollowerDataDao provideFollowerDao(AppDB database) { return database.followerDataDao(); }
 
 
 
@@ -83,8 +94,8 @@ public class AppModule {
     @Provides
     @Singleton
     APIRepo provideAPIRepository(APIService webservice, UserDataDao userDataDao,
-                                 FeedDataDao feedDataDao, Executor executor) {
-        return new APIRepo(webservice, userDataDao, feedDataDao,executor);
+                                 FeedDataDao feedDataDao, FolloweeDataDao followeeDataDao, FollowerDataDao followerDataDao, Executor executor) {
+        return new APIRepo(webservice, userDataDao, feedDataDao, followeeDataDao, followerDataDao, executor);
     }
 
 

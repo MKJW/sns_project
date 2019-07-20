@@ -54,14 +54,6 @@ public class UserData {
     @Expose
     private String email = "";
 
-    @SerializedName("followeeState")
-    @Expose
-    private boolean followeeState = false;
-
-    @SerializedName("followerState")
-    @Expose
-    private boolean followerState = false;
-
 
     @SerializedName("userImageUrl")
     @Expose
@@ -180,8 +172,6 @@ public class UserData {
                 ", followee=" + followee +
                 ", followeeCnt=" + followeeCnt +
                 ", email='" + email + '\'' +
-                ", followeeState=" + followeeState +
-                ", followerState=" + followerState +
                 ", userImageUrl='" + userImageUrl + '\'' +
                 ", website='" + website + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
@@ -222,19 +212,4 @@ public class UserData {
         this.followeeCnt = followeeCnt;
     }
 
-    public boolean isFolloweeState() {
-        return followeeState;
-    }
-
-    public void setFolloweeState(boolean followeeState) {
-        this.followeeState = followeeState;
-    }
-
-    public boolean isFollowerState() {
-        return followerState;
-    }
-
-    public void setFollowerState(boolean followerState) {
-        this.followerState = followerState;
-    }
 }

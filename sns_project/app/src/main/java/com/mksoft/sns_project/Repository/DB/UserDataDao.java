@@ -19,14 +19,14 @@ public interface UserDataDao {
     @Insert(onConflict = REPLACE)
     void save(UserData user);
 
-    @Query("SELECT * FROM userdata")
-    LiveData<UserData> getUserLiveData();//라이브 데이터 형식으로 불러오기
+    @Query("SELECT * FROM userdata WHERE userId = :userID")
+    LiveData<UserData> getUserLiveData(String userID);//라이브 데이터 형식으로 불러오기
 
     @Query("SELECT * FROM userdata WHERE userId = :userID")
     UserData getUserDataFromUserID(String userID);
 
-    @Query("SELECT * FROM userdata WHERE lastRefresh > :lastRefreshMax LIMIT 1")
-    UserData getUser(Date lastRefreshMax);//일반적인 userdata로 불러오기
+    @Query("SELECT * FROM userdata WHERE userId = :userID AND lastRefresh > :lastRefreshMax LIMIT 1")
+    UserData getUser(String userID, Date lastRefreshMax);//일반적인 userdata로 불러오기
     //초기화 기준 시간을 확인하여 불러오기
 
 

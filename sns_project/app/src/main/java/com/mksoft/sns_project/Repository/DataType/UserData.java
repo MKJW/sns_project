@@ -29,23 +29,6 @@ public class UserData {
     @NonNull
     private String username = "";
 
-    @SerializedName("follower")
-    @Expose
-    @Ignore
-    private List<Long> follower;
-
-    @SerializedName("followerCnt")
-    @Expose
-    private Integer followerCnt;
-
-    @SerializedName("followee")
-    @Expose
-    @Ignore
-    private List<Long> followee;
-
-    @SerializedName("followeeCnt")
-    @Expose
-    private Integer followeeCnt;
 
 
 
@@ -167,10 +150,6 @@ public class UserData {
                 "id=" + id +
                 ", userId='" + userId + '\'' +
                 ", username='" + username + '\'' +
-                ", follower=" + follower +
-                ", followerCnt=" + followerCnt +
-                ", followee=" + followee +
-                ", followeeCnt=" + followeeCnt +
                 ", email='" + email + '\'' +
                 ", userImageUrl='" + userImageUrl + '\'' +
                 ", website='" + website + '\'' +
@@ -180,36 +159,6 @@ public class UserData {
                 '}';
     }
 
-    public List<Long> getFollower() {
-        return follower;
-    }
 
-    public void setFollower(List<Long> follower) {
-        this.follower = follower;
-    }
-
-    public Integer getFollowerCnt() {
-        return followerCnt;
-    }
-
-    public void setFollowerCnt(Integer followerCnt) {
-        this.followerCnt = followerCnt;
-    }
-
-    public List<Long> getFollowee() {
-        return followee;
-    }
-
-    public void setFollowee(List<Long> followee) {
-        this.followee = followee;
-    }
-
-    public Integer getFolloweeCnt() {
-        return followeeCnt;
-    }
-
-    public void setFolloweeCnt(Integer followeeCnt) {
-        this.followeeCnt = followeeCnt;
-    }
 
 }

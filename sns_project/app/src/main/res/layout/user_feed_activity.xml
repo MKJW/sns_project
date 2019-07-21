@@ -69,11 +69,11 @@
 
                             <TextView
                                 android:id="@+id/user_feed_post_count_textView"
-                                android:textSize="25dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10"
+                                android:text="0"
                                 android:textColor="@android:color/black"
+                                android:textSize="25dp"
                                 android:textStyle="bold" />
                             <TextView
                                 android:text="게시물"
@@ -90,11 +90,11 @@
 
                             <TextView
                                 android:id="@+id/user_feed_follower_count_textView"
-                                android:textSize="25dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10"
+                                android:text="0"
                                 android:textColor="@android:color/black"
+                                android:textSize="25dp"
                                 android:textStyle="bold" />
                             <TextView
                                 android:text="팔로워"
@@ -111,11 +111,11 @@
 
                             <TextView
                                 android:id="@+id/user_feed_following_count_textView"
-                                android:textSize="25dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="10"
+                                android:text="0"
                                 android:textColor="@android:color/black"
+                                android:textSize="25dp"
                                 android:textStyle="bold" />
                             <TextView
                                 android:text="팔로잉"
@@ -123,11 +123,12 @@
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
                     </LinearLayout>
+
                     <Button
-                        android:id="@+id/user_feed_change_profile_button"
-                        android:text="프로필 수정"
+                        android:id="@+id/user_feed_state_button"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:text="불러오는 중" />
                 </LinearLayout>
 
             <TextView

@@ -2,14 +2,11 @@ package com.mksoft.sns_project.Activity.NewsFeed;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.mksoft.sns_project.Activity.UserFeed.OtherUserFeedActivity;
+import com.mksoft.sns_project.Activity.UserFeed.UserFeedActivity;
 import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.DataType.FeedData;
 
-import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
@@ -52,7 +48,7 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     Intent intent;
     public NewsFeedAdapter(Context context){
         this.context = context;
-        intent = new Intent(context, OtherUserFeedActivity.class);
+        intent = new Intent(context, UserFeedActivity.class);
     }
 
 
@@ -86,7 +82,8 @@ public class NewsFeedAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         myViewHolder.news_feed_item_user_name_textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                intent.putExtra("otherUserID", myViewHolder.news_feed_item_user_name_textView.getText().toString());
+                intent.putExtra("masterID", myViewHolder.news_feed_item_user_name_textView.getText().toString());
+                intent.putExtra("fromPageState", App.fromPageState);
                 context.startActivity(intent);
             }
         });

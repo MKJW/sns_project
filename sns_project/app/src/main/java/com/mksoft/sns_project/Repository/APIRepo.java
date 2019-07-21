@@ -1,7 +1,10 @@
 package com.mksoft.sns_project.Repository;
 
 
+import android.graphics.Color;
 import android.util.Log;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 
@@ -122,81 +125,128 @@ public class APIRepo {
     }
 
 
-
+    public LiveData<List<FolloweeData>> getFolloweeLiveData(String masterID){
+        refreshFollowee(masterID);
+        return followeeDataDao.getLiveDataFolloweeData(masterID);
+    }
+    public LiveData<List<FollowerData>> getFollowerLiveData(String masterID){
+        refreshFollower(masterID);
+        return followerDataDao.getLiveDataFollowerData(masterID);
+    }
     public LiveData<com.mksoft.sns_project.Repository.DataType.UserData> getUserLiveData(String userLogin) {
         refreshUser(userLogin); // try to refresh data if possible from Github Api
-        return userDao.getUserLiveData(); // return a LiveData directly from the database.
+        return userDao.getUserLiveData(userLogin); // return a LiveData directly from the database.
         //라이브데이터를 갖고오는 과정은 쓰래드가 필요 없으니 쓰래드를 사용하지 않는다.
     }
 
-    private void refreshFollowee(final List<Long> FolloweeList, String masterID){
-        webservice.getFollowees(FolloweeList).enqueue(new Callback<List<UserData>>() {
-            @Override
-            public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
-                if(response.isSuccessful()){
-                    executor.execute(()->{
-                        followeeDataDao.deleteAllFromMasterID(masterID);
-                        List<UserData> userList = response.body();
-                        FolloweeData followeeData = new FolloweeData();
-                        followeeData.setMasterID(masterID);
-                        for(int i =0; i<userList.size(); i++){
-                            followeeData.setFolloweeID(userList.get(i).getUserId());
-                            followeeData.setFolloweeImgUrl(userList.get(i).getUserImageUrl());
-                            followeeData.setFolloweeName(userList.get(i).getUsername());
-                            followeeDataDao.save(followeeData);
+    private void refreshFollowee(String masterID){
+
+        executor.execute(() -> {
+            // Check if user was fetched recently
+            boolean followeeExists = (followeeDataDao.getFolloweeDataFromMasterID(masterID, getMaxRefreshTime(new Date())) != null);
+            //최대 1분전에 룸에 유절르 저장했으면 그거 그냥 리턴 그게 아니면 서버에서 받아와서 룸을 초기화 시켜주고
+
+            // If user have to be updated
+            if (!followeeExists) {
+                webservice.getFollowees(masterID).enqueue(new Callback<List<UserData>>() {
+                    @Override
+                    public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
+
+                        if(response.isSuccessful()){
+                            if(response.body() == null)
+                                return;
+                            executor.execute(()->{
+                                followeeDataDao.deleteAllFromMasterID(masterID);
+                                List<UserData> userList = response.body();
+                                FolloweeData followeeData = new FolloweeData();
+                                followeeData.setMasterID(masterID);
+                                for(int i =0; i<userList.size(); i++){
+                                    followeeData.setFolloweeID(userList.get(i).getUserId());
+                                    followeeData.setFolloweeImgUrl(userList.get(i).getUserImageUrl());
+                                    followeeData.setFolloweeName(userList.get(i).getUsername());
+                                    followeeDataDao.save(followeeData);
+                                }
+                            });
+
                         }
-                    });
+                    }
 
-                }
+                    @Override
+                    public void onFailure(Call<List<UserData>> call, Throwable t) {
+                        Log.d("refreshFolloweeErr", t.toString());
+                    }
+                });
             }
 
-            @Override
-            public void onFailure(Call<List<UserData>> call, Throwable t) {
-                Log.d("refreshFolloweeErr", t.toString());
-            }
         });
+
+
+
     }
-    private void refreshFollower(final List<Long> FollowerList, String masterID){
-        Log.d("test0714", String.valueOf(FollowerList.size()));
-        webservice.getFollowers(FollowerList).enqueue(new Callback<List<UserData>>() {
-            @Override
-            public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
-                if(response.body() == null)
-                    Log.d("test0714","null");
+    private void refreshFollower(String masterID){
+        executor.execute(() -> {
+            // Check if user was fetched recently
+            boolean followerExists = (followerDataDao.getFollowerDataFromMasterID(masterID, getMaxRefreshTime(new Date())) != null);
+            //최대 1분전에 룸에 유절르 저장했으면 그거 그냥 리턴 그게 아니면 서버에서 받아와서 룸을 초기화 시켜주고
 
-                if(response.isSuccessful()){
-                    executor.execute(()->{
-                        followerDataDao.deleteAllFromMasterID(masterID);
-                        List<UserData> userList = response.body();
+            // If user have to be updated
+            if (!followerExists) {
+                webservice.getFollowers(masterID).enqueue(new Callback<List<UserData>>() {
+                    @Override
+                    public void onResponse(Call<List<UserData>> call, Response<List<UserData>> response) {
 
-                        FollowerData followerData = new FollowerData();
+                        if(response.isSuccessful()){
+                            if(response.body() == null)
+                                return;
+                            executor.execute(()->{
+                                followerDataDao.deleteAllFromMasterID(masterID);
+                                List<UserData> userList = response.body();
 
-                        followerData.setMasterID(masterID);
-                        for(int i =0; i<userList.size(); i++){
-                            followerData.setFollowerID(userList.get(i).getUserId());
-                            followerData.setFollowerImgUrl(userList.get(i).getUserImageUrl());
-                            followerData.setFollowerName(userList.get(i).getUsername());
+                                FollowerData followerData = new FollowerData();
 
-                            followerDataDao.save(followerData);
+                                followerData.setMasterID(masterID);
+                                for(int i =0; i<userList.size(); i++){
+                                    followerData.setFollowerID(userList.get(i).getUserId());
+                                    followerData.setFollowerImgUrl(userList.get(i).getUserImageUrl());
+                                    followerData.setFollowerName(userList.get(i).getUsername());
 
+                                    followerDataDao.save(followerData);
+
+                                }
+                            });
                         }
-                    });
-                }
 
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<UserData>> call, Throwable t) {
+                        Log.d("refreshFollowerErr", t.toString());
+                    }
+                });
             }
 
-            @Override
-            public void onFailure(Call<List<UserData>> call, Throwable t) {
-                Log.d("refreshFollowerErr", t.toString());
-            }
         });
+
     }//팔로우나 팔로이 리스트에서 상대방의 간략한 정보를 볼 수 있는 수준의 정보만 저장하여 내부에 저장하자
     //클릭하여 상대방 정보를 들어간다면 그때 상대 유저에 대한 정보를 갱신해 주자.
 
+    public void checkFollowee(String masterID, String followeeID, Button refreshState){
+        executor.execute(()->{
+            boolean followeeExists = (followeeDataDao.getCheckFollowee(masterID, followeeID)!=null);
+            if(followeeExists){
+                //팔로위 관계이면
+                refreshState.setText("메세지");
+            }else{
+                refreshState.setText("팔로우");
+                refreshState.setTextColor(Color.WHITE);
+                refreshState.setBackgroundColor(Color.BLUE);
+            }
+        });
+    }
     private void refreshUser(final String userLogin) {
         executor.execute(() -> {
             // Check if user was fetched recently
-            boolean userExists = (userDao.getUser(getMaxRefreshTime(new Date())) != null);
+            boolean userExists = (userDao.getUser(userLogin, getMaxRefreshTime(new Date())) != null);
             //최대 1분전에 룸에 유절르 저장했으면 그거 그냥 리턴 그게 아니면 서버에서 받아와서 룸을 초기화 시켜주고
 
             // If user have to be updated
@@ -207,10 +257,6 @@ public class APIRepo {
 
                         executor.execute(() -> {
                             UserData user = response.body();
-                            user.setFolloweeCnt(user.getFollowee().size());
-                            user.setFollowerCnt(user.getFollower().size());
-                            refreshFollowee(user.getFollowee(), user.getUserId());
-                            refreshFollower(user.getFollower(), user.getUserId());
                             Log.d("test0706", user.toString());
                             user.setLastRefresh(new Date());
                             //유저 정보에 의존하기때문에 시간 갱신은 필요없어 본인다.

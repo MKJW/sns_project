@@ -106,6 +106,12 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     }//툴바 메뉴
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        App.fromPageState = 0;
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_feed_activity);
@@ -161,6 +167,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), AddNewsFeedActivity.class);
+                App.fromPageState = 2;
                 startActivity(intent);
             }
         });
@@ -171,6 +178,9 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
             @Override
             public void onClick(View v) {
                 intent = new Intent(getApplicationContext(), UserFeedActivity.class);
+                App.fromPageState = 4;//유저 버튼을 통하여 넘어가는 경우
+                intent.putExtra("masterID", App.userID);
+                intent.putExtra("fromPageState", App.fromPageState);
                 startActivity(intent);
             }
         });

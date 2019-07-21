@@ -6,6 +6,8 @@ import androidx.room.Entity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 @Entity(primaryKeys = {"masterID", "followeeID"})
 public class FolloweeData {
     @NonNull
@@ -21,6 +23,8 @@ public class FolloweeData {
     @SerializedName("followeeImgUrl")
     String followeeImgUrl;
 
+
+    private Date lastRefresh = null;
 
     public FolloweeData(@NonNull String masterID, @NonNull String followeeID, String followeeName, String followeeImgUrl) {
         this.masterID = masterID;
@@ -73,5 +77,13 @@ public class FolloweeData {
 
     public void setFolloweeImgUrl(String followeeImgUrl) {
         this.followeeImgUrl = followeeImgUrl;
+    }
+
+    public Date getLastRefresh() {
+        return lastRefresh;
+    }
+
+    public void setLastRefresh(Date lastRefresh) {
+        this.lastRefresh = lastRefresh;
     }
 }

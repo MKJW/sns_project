@@ -18,20 +18,12 @@ public class FollowerData {
     @NonNull
     @SerializedName("followerID")
     String followerID;
-    @SerializedName("followerName")
-    @Expose
-    String followerName;
-    @SerializedName("followerImgUrl")
-    @Expose
-    String followerImgUrl;
 
     private Date lastRefresh = null;
 
     public FollowerData(@NonNull String masterID, @NonNull String followerID, String followerName, String followerImgUrl) {
         this.masterID = masterID;
         this.followerID = followerID;
-        this.followerName = followerName;
-        this.followerImgUrl = followerImgUrl;
     }
 
     public FollowerData(){
@@ -43,8 +35,6 @@ public class FollowerData {
         return "FollowerData{" +
                 "masterID='" + masterID + '\'' +
                 ", followerID='" + followerID + '\'' +
-                ", followerName='" + followerName + '\'' +
-                ", followerImgUrl='" + followerImgUrl + '\'' +
                 '}';
     }
 
@@ -64,22 +54,6 @@ public class FollowerData {
 
     public void setFollowerID(@NonNull String followerID) {
         this.followerID = followerID;
-    }
-
-    public String getFollowerName() {
-        return followerName;
-    }
-
-    public void setFollowerName(String followerName) {
-        this.followerName = followerName;
-    }
-
-    public String getFollowerImgUrl() {
-        return followerImgUrl;
-    }
-
-    public void setFollowerImgUrl(String followerImgUrl) {
-        this.followerImgUrl = followerImgUrl;
     }
 
     public Date getLastRefresh() {

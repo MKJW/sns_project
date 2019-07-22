@@ -162,9 +162,9 @@ public class APIRepo {
                                 followeeData.setMasterID(masterID);
                                 for(int i =0; i<userList.size(); i++){
                                     followeeData.setFolloweeID(userList.get(i).getUserId());
-                                    followeeData.setFolloweeImgUrl(userList.get(i).getUserImageUrl());
-                                    followeeData.setFolloweeName(userList.get(i).getUsername());
                                     followeeDataDao.save(followeeData);
+                                    userList.get(i).setLastRefresh(new Date());
+                                    userDao.save(userList.get(i));
                                 }
                             });
 
@@ -207,11 +207,10 @@ public class APIRepo {
                                 followerData.setMasterID(masterID);
                                 for(int i =0; i<userList.size(); i++){
                                     followerData.setFollowerID(userList.get(i).getUserId());
-                                    followerData.setFollowerImgUrl(userList.get(i).getUserImageUrl());
-                                    followerData.setFollowerName(userList.get(i).getUsername());
 
                                     followerDataDao.save(followerData);
-
+                                    userList.get(i).setLastRefresh(new Date());
+                                    userDao.save(userList.get(i));
                                 }
                             });
                         }

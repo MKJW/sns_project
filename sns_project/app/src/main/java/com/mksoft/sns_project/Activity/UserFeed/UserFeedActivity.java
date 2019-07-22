@@ -36,7 +36,7 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
-
+//새로고침에대한 처리 필요
 public class UserFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
     public static UserFeedActivity userFeedActivity;
     private Integer fromPageState = 0;

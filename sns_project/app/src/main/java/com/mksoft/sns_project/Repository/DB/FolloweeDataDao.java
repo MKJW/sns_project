@@ -21,7 +21,7 @@ public interface FolloweeDataDao {
     void save(FolloweeData followeeData);
 
     @Query("SELECT * FROM FolloweeData WHERE masterID = :masterID AND lastRefresh > :lastRefreshMax LIMIT 1")
-    List<FolloweeData> getFolloweeDataFromMasterID(String masterID, Date lastRefreshMax);
+    FolloweeData getFolloweeDataFromMasterID(String masterID, Date lastRefreshMax);
 
     @Query("SELECT COUNT(*) FROM FolloweeData WHERE masterID = :masterID")
     Integer getFolloweeCnt(String masterID);

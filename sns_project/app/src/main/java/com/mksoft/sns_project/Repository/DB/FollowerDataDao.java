@@ -24,7 +24,7 @@ public interface FollowerDataDao {
     Integer getFollowerCnt(String masterID);
 
     @Query("SELECT * FROM FollowerData WHERE masterID = :masterID AND lastRefresh > :lastRefreshMax LIMIT 1")
-    List<FollowerData> getFollowerDataFromMasterID(String masterID, Date lastRefreshMax);
+    FollowerData getFollowerDataFromMasterID(String masterID, Date lastRefreshMax);
 
     @Query("SELECT * FROM FollowerData WHERE masterID = :masterID")
     LiveData<List<FollowerData>> getLiveDataFollowerData(String masterID);

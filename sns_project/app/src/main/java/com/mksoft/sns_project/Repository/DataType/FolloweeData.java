@@ -16,21 +16,12 @@ public class FolloweeData {
     @NonNull
     @SerializedName("followeeID")
     String followeeID;
-    @Expose
-    @SerializedName("followeeName")
-    String followeeName;
-    @Expose
-    @SerializedName("followeeImgUrl")
-    String followeeImgUrl;
-
 
     private Date lastRefresh = null;
 
-    public FolloweeData(@NonNull String masterID, @NonNull String followeeID, String followeeName, String followeeImgUrl) {
+    public FolloweeData(@NonNull String masterID, @NonNull String followeeID) {
         this.masterID = masterID;
         this.followeeID = followeeID;
-        this.followeeName = followeeName;
-        this.followeeImgUrl = followeeImgUrl;
     }
 
     public FolloweeData(){}
@@ -40,8 +31,6 @@ public class FolloweeData {
         return "FolloweeData{" +
                 "masterID='" + masterID + '\'' +
                 ", followeeID='" + followeeID + '\'' +
-                ", followeeName='" + followeeName + '\'' +
-                ", followeeImgUrl='" + followeeImgUrl + '\'' +
                 '}';
     }
 
@@ -63,21 +52,6 @@ public class FolloweeData {
         this.followeeID = followeeID;
     }
 
-    public String getFolloweeName() {
-        return followeeName;
-    }
-
-    public void setFolloweeName(String followeeName) {
-        this.followeeName = followeeName;
-    }
-
-    public String getFolloweeImgUrl() {
-        return followeeImgUrl;
-    }
-
-    public void setFolloweeImgUrl(String followeeImgUrl) {
-        this.followeeImgUrl = followeeImgUrl;
-    }
 
     public Date getLastRefresh() {
         return lastRefresh;

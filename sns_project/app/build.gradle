@@ -66,6 +66,4 @@ dependencies {
 
     //권한 라이브러리
     implementation 'gun0912.ted:tedpermission:2.0.0'
-    //viewPager2
-    implementation 'androidx.viewpager2:viewpager2:1.0.0-alpha01'
 }

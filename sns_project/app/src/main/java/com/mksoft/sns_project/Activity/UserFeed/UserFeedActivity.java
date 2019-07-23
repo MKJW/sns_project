@@ -83,7 +83,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
 
         followerViewModel = ViewModelProviders.of(this, viewModelFactory).get(FollowerViewModel.class);
         followerViewModel.init(masterID);
-        followerViewModel.getUserLiveData().observe(this, followerData -> updateFolloweeCnt(followerData.size()));
+        followerViewModel.getUserLiveData().observe(this, followerData -> updateFollowerCnt(followerData.size()));
         //팔로우 갱신
     }
 

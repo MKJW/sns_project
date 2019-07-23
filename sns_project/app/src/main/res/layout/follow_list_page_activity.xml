@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/user_feed_layout"
+    android:id="@+id/follow_list_page_background_relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -26,10 +26,13 @@
 
 
     </androidx.appcompat.widget.Toolbar>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/follow_list_page_tabLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/follow_list_page_toolbar"
+        app:tabIndicatorColor="@android:color/darker_gray" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:layout_below="@+id/follow_list_page_tabLayout"
@@ -38,7 +41,7 @@
         android:layout_height="match_parent"
         android:id="@+id/follow_list_page_swipe_layout">
 
-        <androidx.viewpager2.widget.ViewPager2
+        <androidx.viewpager.widget.ViewPager
             android:id="@+id/follow_list_page_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

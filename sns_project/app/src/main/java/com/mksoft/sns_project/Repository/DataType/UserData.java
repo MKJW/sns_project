@@ -20,7 +20,7 @@ public class UserData {
     @SerializedName("id")
     private Integer id = 0;
 
-
+    @PrimaryKey
     @SerializedName("userId")
     @NonNull
     private String userId="";

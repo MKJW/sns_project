@@ -2,6 +2,7 @@ package com.mksoft.sns_project.Repository;
 
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 
 import javax.inject.Inject;
@@ -273,6 +275,38 @@ public class APIRepo {
 
         });
     }//유저 값을 넘겨주는 것이 아니라 데이터베이스에 유저를 저장하고 디비(room)에 저장하기 위하여 쓰래드 사용....
+
+    public UserData getUserData(String userID){
+        UserData userData = null;
+        try {
+            userData = new getAllAsyncTask(userDao, userID).execute().get();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        return userData;
+
+    }
+
+    private static class getAllAsyncTask extends AsyncTask<Void, Void, UserData> {
+        private UserDataDao asyncUserDao;
+        private String userID;
+
+        getAllAsyncTask(UserDataDao dao, String userID){
+            asyncUserDao = dao;
+            this.userID = userID;
+        }
+
+        @Override
+        protected UserData doInBackground(Void... voids) {
+
+
+            return asyncUserDao.getUserDataFromUserID(userID);
+        }
+    }
+
 
     private Date getMaxRefreshTime(Date currentDate){
         Calendar cal = Calendar.getInstance();

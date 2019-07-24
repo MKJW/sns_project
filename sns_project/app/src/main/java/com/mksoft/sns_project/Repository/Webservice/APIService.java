@@ -10,6 +10,8 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -25,6 +27,14 @@ public interface APIService {
     Call<List<UserData>> getFollowers(
             @Path("userID") String userID
     );
+
+    @FormUrlEncoded
+    @POST("/user/add/follower/{userID}")
+    Call<Void> addFollower(
+            @Field("followId") String followID,
+            @Path("userID") String userID
+    );
+
     @GET("/user/followees/{userID}")
     Call<List<UserData>> getFollowees(
             @Path("userID") String userID

@@ -141,6 +141,26 @@ public class APIRepo {
         //라이브데이터를 갖고오는 과정은 쓰래드가 필요 없으니 쓰래드를 사용하지 않는다.
     }
 
+
+    // FIXME add appropriate logic here MK!
+    public void addFollower(String masterID) {
+        webservice.addFollower("followID", masterID).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() == null) {
+                        return;
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("addFollower", "onFailure on addFollower");
+            }
+        });
+    }
+
     private void refreshFollowee(String masterID){
 
         executor.execute(() -> {

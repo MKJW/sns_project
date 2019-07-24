@@ -94,8 +94,8 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         addNewsFeedActivity = this;
         init();
         etcMethodClass = new EtcMethodClass(this, add_news_feed_layout);
-        etcMethodClass.tedPermission();
-        etcMethodClass.clickHideKeyboard();
+        etcMethodClass.permissionMethod.tedPermission();
+        etcMethodClass.hideKeyboard.clickHideKeyboard();
         clickAddImageView();
     }
     void init(){
@@ -117,7 +117,7 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
         add_news_feed_add_imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(etcMethodClass.getPermission()){
+                if(etcMethodClass.permissionMethod.getPermission()){
                     goToAlbum();
                 }else{
                     Toast.makeText(getApplicationContext(), "권한을 먼저 승인해 주세여.", Toast.LENGTH_LONG).show();

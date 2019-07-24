@@ -2,7 +2,9 @@ package com.mksoft.sns_project.Activity.FollowListPage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +30,7 @@ import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.ViewModel.FolloweeViewModel;
 import com.mksoft.sns_project.ViewModel.FollowerViewModel;
 import com.mksoft.sns_project.ViewModel.UserViewModel;
+import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +49,7 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     //2 그외
     //새로고침 처리 필요
     private String masterID;
+    EtcMethodClass etcMethodClass;
     Intent intent;
     FollowListPageViewPagerAdapter followListPageViewPagerAdapter;
     @Inject
@@ -89,6 +93,11 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
         fromPageState = getIntent().getExtras().getInt("fromPageState");
     }
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.appbar_follow_list_page_action, menu) ;
+        return true ;
+    }
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             default :
@@ -103,9 +112,11 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
         this.configureDagger();
         this.configureViewModel();
         followListPageActivity = this;
-
+        etcMethodClass = new EtcMethodClass(this, follow_list_page_background_relativeLayout);
         init();
-
+        etcMethodClass.bottomLineButton.click_home_button(follow_list_page_home_button);
+        etcMethodClass.bottomLineButton.click_add_feed_button(follow_list_page_add_feed_button);
+        etcMethodClass.bottomLineButton.click_user_feed_button(follow_list_page_user_feed_button);
     }
     //탑
     RelativeLayout follow_list_page_background_relativeLayout;
@@ -231,7 +242,6 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
                 Glide.with(this).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(follow_list_page_user_feed_button);
 
             }else{
-
                 Glide.with(this).load(App.BASE_URL+"/files/"+user.getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(follow_list_page_user_feed_button);
             }
 

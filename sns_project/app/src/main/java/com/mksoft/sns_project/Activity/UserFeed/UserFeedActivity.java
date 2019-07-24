@@ -30,6 +30,7 @@ import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.ViewModel.FolloweeViewModel;
 import com.mksoft.sns_project.ViewModel.FollowerViewModel;
 import com.mksoft.sns_project.ViewModel.UserViewModel;
+import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
 import javax.inject.Inject;
 
@@ -41,9 +42,10 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     public static UserFeedActivity userFeedActivity;
     private Integer fromPageState = 0;
     //0은 유저 버튼을 눌러서 오는 경우,
-    // 1은 피드를 눌러서 자기 자신에게 오는경우
+    //1은 피드를 눌러서 자기 자신에게 오는경우
     //2 그외
     private String masterID;
+    EtcMethodClass etcMethodClass;
     Intent intent;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
@@ -135,15 +137,14 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_feed_activity);
-
         this.configureDagger();
         this.configureViewModel();
         userFeedActivity = this;
 
         init();
-
-        click_user_feed_home_button();
-        click_user_feed_add_feed_button();
+        etcMethodClass = new EtcMethodClass(this, user_feed_layout);
+        etcMethodClass.bottomLineButton.click_home_button(user_feed_home_button);
+        etcMethodClass.bottomLineButton.click_add_feed_button(user_feed_add_feed_button);
     }
     private void init(){
         user_feed_layout = findViewById(R.id.user_feed_layout);
@@ -183,27 +184,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         }
 
     }
-    private void click_user_feed_home_button(){
-        user_feed_home_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), NewsFeedActivity.class);
-                App.fromPageState = 0;
-                startActivity(intent);
-            }
-        });
-    }
-    private void click_user_feed_add_feed_button(){
-        user_feed_add_feed_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), AddNewsFeedActivity.class);
-                App.fromPageState = 2;
-                startActivity(intent);
 
-            }
-        });
-    }
     private void updateProfileUser(UserData user){
 
         if (user != null){

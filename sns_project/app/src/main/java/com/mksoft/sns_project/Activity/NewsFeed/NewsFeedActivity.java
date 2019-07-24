@@ -122,9 +122,9 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
         newsFeedActivity = this;
         init();
         etcMethodClass = new EtcMethodClass(this, news_feed_layout);
-        etcMethodClass.clickHideKeyboard();
-        click_news_feed_add_feed_button();
-        click_news_feed_user_feed_button();
+        etcMethodClass.hideKeyboard.clickHideKeyboard();
+        etcMethodClass.bottomLineButton.click_add_feed_button(news_feed_add_feed_button);
+        etcMethodClass.bottomLineButton.click_user_feed_button(news_feed_user_feed_button);
     }
 
     private void init(){
@@ -162,29 +162,7 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
 
     }//리스트뷰 초기화
 
-    private void click_news_feed_add_feed_button(){
-        news_feed_add_feed_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), AddNewsFeedActivity.class);
-                App.fromPageState = 2;
-                startActivity(intent);
-            }
-        });
-    }//추가페이지로 넘어가는 버튼
 
-    private void click_news_feed_user_feed_button(){
-        news_feed_user_feed_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                intent = new Intent(getApplicationContext(), UserFeedActivity.class);
-                App.fromPageState = 4;//유저 버튼을 통하여 넘어가는 경우
-                intent.putExtra("masterID", App.userID);
-                intent.putExtra("fromPageState", App.fromPageState);
-                startActivity(intent);
-            }
-        });
-    }//유저정보로 넘어가는 버튼
 
     private void updateUser(UserData user){
         if (user != null){

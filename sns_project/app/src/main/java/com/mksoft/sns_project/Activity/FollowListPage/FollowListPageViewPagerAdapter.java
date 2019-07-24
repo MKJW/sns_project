@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.mksoft.sns_project.R;
+import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 
 import java.util.ArrayList;
@@ -24,10 +25,10 @@ public class FollowListPageViewPagerAdapter extends PagerAdapter {
     private List<FollowListPageListViewAdapter> followListAdapter = new ArrayList<>();
     private List<UserData> followerList = Collections.emptyList();
     private List<UserData> followeeList = Collections.emptyList();
-    FollowListPageViewPagerAdapter(Context context) {
+    FollowListPageViewPagerAdapter(Context context, APIRepo apiRepo) {
         this.context = context;
-        FollowListPageListViewAdapter followeeListAdapter =new FollowListPageListViewAdapter(context);
-        FollowListPageListViewAdapter followerListAdapter =new FollowListPageListViewAdapter(context);
+        FollowListPageListViewAdapter followeeListAdapter =new FollowListPageListViewAdapter(context, 1, apiRepo);
+        FollowListPageListViewAdapter followerListAdapter =new FollowListPageListViewAdapter(context, 0, apiRepo);
         followListAdapter.add(followeeListAdapter);
         followListAdapter.add(followerListAdapter);
     }

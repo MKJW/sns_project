@@ -15,7 +15,7 @@ import dagger.android.HasActivityInjector;
 
 public class App extends Application implements HasActivityInjector {
     public static Context context;
-    public static String BASE_URL = "http://:8888";//서버 변수
+    public static String BASE_URL = "http://ec2-52-78-8-248.ap-northeast-2.compute.amazonaws.com:8888";//서버 변수
     public static String userID = "mkjw";//로그인할 경우 루트권한을 갖는 사용자 아이디로 초기화
     public static Integer fromPageState = 0;
     //0 : home 버튼

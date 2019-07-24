@@ -12,7 +12,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
+import com.mksoft.sns_project.Repository.APIRepo;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 
 import java.util.Collections;
@@ -25,8 +29,12 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
     List<UserData> items =  Collections.emptyList();//userData로
     Context context;
     MyViewHolder myViewHolder;
-    public FollowListPageListViewAdapter(Context context){
+    APIRepo apiRepo;
+    Integer pageState;
+    public FollowListPageListViewAdapter(Context context, Integer pageState, APIRepo apiRepo){
         this.context = context;
+        this.apiRepo = apiRepo;
+        this.pageState = pageState;
     }
 
 
@@ -44,6 +52,22 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
         myViewHolder = (MyViewHolder) holder;
         myViewHolder.follow_list_page_user_id_textView.setText(items.get(position).getUserId());
         myViewHolder.follow_list_page_user_name_textView.setText(items.get(position).getUsername());
+
+        if(pageState == 0){
+            myViewHolder.follow_list_page_follow_state_button.setText("팔로잉");
+            apiRepo.checkFollowee(App.userID, items.get(position).getUserId(), myViewHolder.follow_list_page_follow_state_button, "팔로잉");
+
+            //팔로워 페이지
+        }else if(pageState == 1){
+            myViewHolder.follow_list_page_follow_state_button.setText("팔로잉");
+        }//팔로잉 페이지
+        if(items.get(position).getUserImageUrl() == null||String.valueOf(items.get(position).getUserImageUrl()).length() == 0){
+            Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.follow_list_page_user_imageView);
+
+        }else{
+
+            Glide.with(context).load(App.BASE_URL+"/files/"+items.get(position).getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(myViewHolder.follow_list_page_user_imageView);
+        }
     }//itemView초기화
 
     @Override

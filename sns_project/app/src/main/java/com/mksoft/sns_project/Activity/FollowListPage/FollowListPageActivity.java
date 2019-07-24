@@ -129,6 +129,9 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
 
     //미드
     TabLayout follow_list_page_tabLayout;
+    TabLayout.Tab follow_list_page_follower_tab;
+    TabLayout.Tab follow_list_page_followee_tab;
+
     SwipeRefreshLayout follow_list_page_swipe_layout;
     ViewPager follow_list_page_viewpager;
 
@@ -155,12 +158,12 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
         follow_list_page_tabLayout = findViewById(R.id.follow_list_page_tabLayout);
         follow_list_page_swipe_layout = findViewById(R.id.follow_list_page_swipe_layout);
         follow_list_page_viewpager = findViewById(R.id.follow_list_page_viewpager);
-
-
-        follow_list_page_tabLayout.addTab(follow_list_page_tabLayout.newTab().setText("팔로워"));
-        follow_list_page_tabLayout.addTab(follow_list_page_tabLayout.newTab().setText("팔로잉"));
+        follow_list_page_follower_tab = follow_list_page_tabLayout.newTab().setText("팔로워");
+        follow_list_page_followee_tab = follow_list_page_tabLayout.newTab().setText("팔로잉");
+        follow_list_page_tabLayout.addTab(follow_list_page_follower_tab);
+        follow_list_page_tabLayout.addTab(follow_list_page_followee_tab);
         follow_list_page_tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        followListPageViewPagerAdapter =new FollowListPageViewPagerAdapter(this);
+        followListPageViewPagerAdapter =new FollowListPageViewPagerAdapter(this, apiRepo);
         follow_list_page_viewpager.setAdapter(followListPageViewPagerAdapter);
         viewPagerAddOnPageChangeListener();
         viewPagerAddOnTabListener();
@@ -228,6 +231,7 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
             userList.add(apiRepo.getUserData(followeeDataList.get(i).getFolloweeID()));
 
         }
+        follow_list_page_followee_tab.setText(userList.size()+" 팔로잉");
         followListPageViewPagerAdapter.updataFolloweeList(userList);
 
     }
@@ -238,6 +242,7 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
             userList.add(apiRepo.getUserData(followerDataList.get(i).getFollowerID()));
 
         }
+        follow_list_page_follower_tab.setText(userList.size()+" 팔로워");
         followListPageViewPagerAdapter.updateFollowerList(userList);
     }
 

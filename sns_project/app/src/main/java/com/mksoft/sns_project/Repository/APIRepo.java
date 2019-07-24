@@ -231,16 +231,16 @@ public class APIRepo {
     }//팔로우나 팔로이 리스트에서 상대방의 간략한 정보를 볼 수 있는 수준의 정보만 저장하여 내부에 저장하자
     //클릭하여 상대방 정보를 들어간다면 그때 상대 유저에 대한 정보를 갱신해 주자.
 
-    public void checkFollowee(String masterID, String followeeID, Button refreshState){
+    public void checkFollowee(String masterID, String followeeID, Button refreshState, String whenFolloweeStateMessage){
         executor.execute(()->{
             boolean followeeExists = (followeeDataDao.getCheckFollowee(masterID, followeeID)!=null);
             if(followeeExists){
                 //팔로위 관계이면
-                refreshState.setText("메세지");
+                refreshState.setText(whenFolloweeStateMessage);
             }else{
                 refreshState.setText("팔로우");
                 refreshState.setTextColor(Color.WHITE);
-                refreshState.setBackgroundColor(Color.BLUE);
+                refreshState.setBackgroundColor(0x3366ff);
             }
         });
     }

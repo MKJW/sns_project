@@ -174,7 +174,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         if(masterID.equals( App.userID)){
             user_feed_state_button.setText("프로필 수정");
         }else{
-            apiRepo.checkFollowee(App.userID, masterID, user_feed_state_button);
+            apiRepo.checkFollowee(App.userID, masterID, user_feed_state_button, "메세지");
 
         }
         user_feed_follower_count_layout = findViewById(R.id.user_feed_follower_count_layout);

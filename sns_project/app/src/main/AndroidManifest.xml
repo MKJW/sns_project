@@ -30,7 +30,8 @@
         </activity>
         <activity android:name=".Activity.UserFeed.UserFeedActivity">
         </activity>
-
+        <activity android:name=".Activity.FollowListPage.FollowListPageActivity">
+        </activity>
 
     </application>
 

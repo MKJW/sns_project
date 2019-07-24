@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,10 +23,12 @@ import androidx.lifecycle.ViewModelProviders;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.mksoft.sns_project.Activity.AddFeed.AddNewsFeedActivity;
+import com.mksoft.sns_project.Activity.FollowListPage.FollowListPageActivity;
 import com.mksoft.sns_project.Activity.NewsFeed.NewsFeedActivity;
 import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.APIRepo;
+import com.mksoft.sns_project.Repository.DataType.FolloweeData;
 import com.mksoft.sns_project.Repository.DataType.UserData;
 import com.mksoft.sns_project.ViewModel.FolloweeViewModel;
 import com.mksoft.sns_project.ViewModel.FollowerViewModel;
@@ -46,7 +49,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     //2 그외
     private String masterID;
     EtcMethodClass etcMethodClass;
-    Intent intent;
+
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private UserViewModel userViewModel;
@@ -109,6 +112,8 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     ImageView user_feed_profile_imageView;
     TextView user_feed_profile_name_textView;
     Button user_feed_state_button;
+    LinearLayout user_feed_follower_count_layout;
+    LinearLayout user_feed_following_count_layout;
     //바텀레이아웃
     ImageView user_feed_home_button;
     ImageView user_feed_add_feed_button;
@@ -145,6 +150,8 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         etcMethodClass = new EtcMethodClass(this, user_feed_layout);
         etcMethodClass.bottomLineButton.click_home_button(user_feed_home_button);
         etcMethodClass.bottomLineButton.click_add_feed_button(user_feed_add_feed_button);
+        clickFollower();
+        clickFollowee();
     }
     private void init(){
         user_feed_layout = findViewById(R.id.user_feed_layout);
@@ -170,9 +177,12 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
             apiRepo.checkFollowee(App.userID, masterID, user_feed_state_button);
 
         }
+        user_feed_follower_count_layout = findViewById(R.id.user_feed_follower_count_layout);
+        user_feed_following_count_layout = findViewById(R.id.user_feed_following_count_layout);
+
+
 
         user_feed_home_button = findViewById(R.id.user_feed_home_button);
-
         user_feed_add_feed_button = findViewById(R.id.user_feed_add_feed_button);
         user_feed_user_feed_button = findViewById(R.id.user_feed_user_feed_button);
 
@@ -184,7 +194,31 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         }
 
     }
+    private void clickFollower(){
+        user_feed_follower_count_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                Intent intent = new Intent(App.context, FollowListPageActivity.class);
+                intent.putExtra("masterID", masterID);
+                intent.putExtra("fromPageState", App.fromPageState);
+                intent.putExtra("currentItemIdx", 0);
+                App.context.startActivity(intent);
+            }
+        });
+    }
+    private void clickFollowee(){
+        user_feed_following_count_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(App.context, FollowListPageActivity.class);
+                intent.putExtra("masterID", masterID);
+                intent.putExtra("fromPageState", App.fromPageState);
+                intent.putExtra("currentItemIdx", 1);
+                App.context.startActivity(intent);
+            }
+        });
+    }
     private void updateProfileUser(UserData user){
 
         if (user != null){

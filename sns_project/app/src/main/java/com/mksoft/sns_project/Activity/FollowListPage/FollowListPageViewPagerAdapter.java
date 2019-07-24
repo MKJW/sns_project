@@ -1,6 +1,7 @@
 package com.mksoft.sns_project.Activity.FollowListPage;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,8 @@ public class FollowListPageViewPagerAdapter extends PagerAdapter {
 
     private Context context;
     private List<FollowListPageListViewAdapter> followListAdapter = new ArrayList<>();
-    private List<List<UserData>> items =  Collections.emptyList();
+    private List<UserData> followerList = Collections.emptyList();
+    private List<UserData> followeeList = Collections.emptyList();
     FollowListPageViewPagerAdapter(Context context) {
         this.context = context;
         FollowListPageListViewAdapter followeeListAdapter =new FollowListPageListViewAdapter(context);
@@ -50,17 +52,19 @@ public class FollowListPageViewPagerAdapter extends PagerAdapter {
     }
 
     public void updateFollowerList(List<UserData> items){
-        followListAdapter.get(0).updateFollowList(items);
+         followerList = items;
+        followListAdapter.get(0).updateFollowList(followerList);
         notifyDataSetChanged();
     }
     public void updataFolloweeList(List<UserData> items){
-        followListAdapter.get(1).updateFollowList(items);
+        followeeList = items;
+        followListAdapter.get(1).updateFollowList(followeeList);
         notifyDataSetChanged();
     }
 
     @Override
     public int getCount() {
-        return items.size();
+        return 2;
     }
 
     @Override

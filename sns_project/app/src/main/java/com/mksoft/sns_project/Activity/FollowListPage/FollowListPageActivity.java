@@ -2,6 +2,7 @@ package com.mksoft.sns_project.Activity.FollowListPage;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -50,6 +51,7 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     //새로고침 처리 필요
     private String masterID;
     EtcMethodClass etcMethodClass;
+    Integer currentItemIdx = 0;//0팔로워, 1팔로이
     Intent intent;
     FollowListPageViewPagerAdapter followListPageViewPagerAdapter;
     @Inject
@@ -91,6 +93,7 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     private void configureExtras(){
         masterID = getIntent().getExtras().getString("masterID");
         fromPageState = getIntent().getExtras().getInt("fromPageState");
+        currentItemIdx = getIntent().getExtras().getInt("currentItemIdx");
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,8 +115,9 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
         this.configureDagger();
         this.configureViewModel();
         followListPageActivity = this;
-        etcMethodClass = new EtcMethodClass(this, follow_list_page_background_relativeLayout);
         init();
+        etcMethodClass = new EtcMethodClass(this, follow_list_page_background_relativeLayout);
+        follow_list_page_viewpager.setCurrentItem(currentItemIdx);//팔로우에서 시작할지 팔로이에서 시작할지
         etcMethodClass.bottomLineButton.click_home_button(follow_list_page_home_button);
         etcMethodClass.bottomLineButton.click_add_feed_button(follow_list_page_add_feed_button);
         etcMethodClass.bottomLineButton.click_user_feed_button(follow_list_page_user_feed_button);
@@ -142,8 +146,8 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
         follow_list_page_toolbar = findViewById(R.id.follow_list_page_toolbar);
         follow_list_page_toolbar_title_textView = findViewById(R.id.follow_list_page_toolbar_title_textView);
         follow_list_page_toolbar_title_textView.setText(masterID);
-        if(fromPageState != 4)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
+        setSupportActionBar(follow_list_page_toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);//뒤로가기
         getSupportActionBar().setTitle(null);
 
 
@@ -229,10 +233,11 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     }
     private void updateFollowerList(List<FollowerData> followerDataList){
         List<UserData> userList = new ArrayList<>();
+
         for(int i =0; i<followerDataList.size(); i++) {
             userList.add(apiRepo.getUserData(followerDataList.get(i).getFollowerID()));
-        }
 
+        }
         followListPageViewPagerAdapter.updateFollowerList(userList);
     }
 

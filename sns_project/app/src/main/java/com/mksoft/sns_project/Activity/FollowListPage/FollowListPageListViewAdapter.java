@@ -54,7 +54,6 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
         myViewHolder.follow_list_page_user_name_textView.setText(items.get(position).getUsername());
 
         if(pageState == 0){
-            myViewHolder.follow_list_page_follow_state_button.setText("팔로잉");
             apiRepo.checkFollowee(App.userID, items.get(position).getUserId(), myViewHolder.follow_list_page_follow_state_button, "팔로잉");
 
             //팔로워 페이지

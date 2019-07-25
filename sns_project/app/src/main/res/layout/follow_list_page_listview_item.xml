@@ -35,13 +35,15 @@
         android:text="user1"
         android:textSize="20dp"
         android:typeface="serif" />
+
     <Button
         android:id="@+id/follow_list_page_follow_state_button"
-        android:layout_centerInParent="true"
-        android:layout_toLeftOf="@+id/follow_list_page_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="팔로잉"/>
+        android:layout_centerInParent="true"
+        android:layout_toLeftOf="@+id/follow_list_page_delete_button"
+        android:background="@drawable/custom_follow_state_button"
+        android:text="팔로잉" />
     <ImageView
         android:id="@+id/follow_list_page_delete_button"
         android:layout_centerInParent="true"

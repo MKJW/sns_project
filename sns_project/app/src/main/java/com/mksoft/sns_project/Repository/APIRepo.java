@@ -143,12 +143,20 @@ public class APIRepo {
 
 
     // FIXME add appropriate logic here MK!
-    public void addFollower(String masterID) {
-        webservice.addFollower("followID", masterID).enqueue(new Callback<Void>() {
+    public void addFollower(String masterID, String followID, Button refreshState) {
+        webservice.addFollower(followID, masterID).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     if (response.body() == null) {
+                        executor.execute(()->{
+                            FolloweeData followeeData = new FolloweeData();
+                            followeeData.setMasterID(masterID);
+                            followeeData.setFolloweeID(followID);
+                            followeeDataDao.save(followeeData);
+                            refreshState.setText("팔로잉");
+                            refreshState.setBackgroundColor(0xFFFFFF);
+                        });
                         return;
                     }
                 }

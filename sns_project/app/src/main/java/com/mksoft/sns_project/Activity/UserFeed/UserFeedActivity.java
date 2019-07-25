@@ -152,6 +152,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         etcMethodClass.bottomLineButton.click_add_feed_button(user_feed_add_feed_button);
         clickFollower();
         clickFollowee();
+        clickStateButton();
     }
     private void init(){
         user_feed_layout = findViewById(R.id.user_feed_layout);
@@ -177,6 +178,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
             apiRepo.checkFollowee(App.userID, masterID, user_feed_state_button, "메세지");
 
         }
+
         user_feed_follower_count_layout = findViewById(R.id.user_feed_follower_count_layout);
         user_feed_following_count_layout = findViewById(R.id.user_feed_following_count_layout);
 
@@ -193,6 +195,21 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
             user_feed_home_button.setImageResource(R.drawable.home_black);
         }
 
+    }
+    private void clickStateButton(){
+        user_feed_state_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(user_feed_state_button.getText() == "팔로우"){
+                    apiRepo.addFollower(App.userID, masterID, user_feed_state_button);
+                }else if(user_feed_state_button.getText() == "팔로잉"){
+                    //팔로우 취소
+
+                }else if(user_feed_state_button.getText() == "메세지"){
+                    //메세지 기능
+                }
+            }
+        });
     }
     private void clickFollower(){
         user_feed_follower_count_layout.setOnClickListener(new View.OnClickListener() {

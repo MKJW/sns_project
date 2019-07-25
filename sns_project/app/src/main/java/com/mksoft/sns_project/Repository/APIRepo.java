@@ -4,12 +4,14 @@ package com.mksoft.sns_project.Repository;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.lifecycle.LiveData;
 
 import com.mksoft.sns_project.App;
+import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.DB.FeedDataDao;
 import com.mksoft.sns_project.Repository.DB.FolloweeDataDao;
 import com.mksoft.sns_project.Repository.DB.FollowerDataDao;
@@ -156,6 +158,12 @@ public class APIRepo {
                             followeeDataDao.save(followeeData);
                             refreshState.setText("팔로잉");
                             refreshState.setBackgroundColor(0xFFFFFF);
+                            refreshState.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    //언팔
+                                }
+                            });
                         });
                         return;
                     }
@@ -191,6 +199,7 @@ public class APIRepo {
                                 FolloweeData followeeData = new FolloweeData();
                                 followeeData.setMasterID(masterID);
                                 for(int i =0; i<userList.size(); i++){
+
                                     followeeData.setFolloweeID(userList.get(i).getUserId());
                                     followeeDataDao.save(followeeData);
                                     userList.get(i).setLastRefresh(new Date());
@@ -259,16 +268,23 @@ public class APIRepo {
     }//팔로우나 팔로이 리스트에서 상대방의 간략한 정보를 볼 수 있는 수준의 정보만 저장하여 내부에 저장하자
     //클릭하여 상대방 정보를 들어간다면 그때 상대 유저에 대한 정보를 갱신해 주자.
 
-    public void checkFollowee(String masterID, String followeeID, Button refreshState, String whenFolloweeStateMessage){
+    public void checkFollowee(String masterID, String followeeID, final Button refreshState, String whenFolloweeStateMessage){
         executor.execute(()->{
             boolean followeeExists = (followeeDataDao.getCheckFollowee(masterID, followeeID)!=null);
             if(followeeExists){
                 //팔로위 관계이면
+
                 refreshState.setText(whenFolloweeStateMessage);
             }else{
                 refreshState.setText("팔로우");
                 refreshState.setTextColor(Color.WHITE);
-                refreshState.setBackgroundColor(0x3366ff);
+                refreshState.setBackgroundResource(R.drawable.custom_follow_state_button_blue);
+                refreshState.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        addFollower(App.userID, followeeID, refreshState);
+                    }
+                });
             }
         });
     }

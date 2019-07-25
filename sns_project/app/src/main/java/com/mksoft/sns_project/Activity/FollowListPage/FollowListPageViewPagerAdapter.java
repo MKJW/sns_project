@@ -29,8 +29,8 @@ public class FollowListPageViewPagerAdapter extends PagerAdapter {
         this.context = context;
         FollowListPageListViewAdapter followeeListAdapter =new FollowListPageListViewAdapter(context, 1, apiRepo);
         FollowListPageListViewAdapter followerListAdapter =new FollowListPageListViewAdapter(context, 0, apiRepo);
-        followListAdapter.add(followeeListAdapter);
         followListAdapter.add(followerListAdapter);
+        followListAdapter.add(followeeListAdapter);
     }
 
     @NonNull

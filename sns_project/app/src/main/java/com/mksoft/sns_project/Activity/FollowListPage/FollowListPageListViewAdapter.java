@@ -59,18 +59,13 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
             //팔로워 페이지
         }else if(pageState == 1){
             myViewHolder.follow_list_page_follow_state_button.setText("팔로잉");
-        }//팔로잉 페이지
-        myViewHolder.follow_list_page_follow_state_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(myViewHolder.follow_list_page_follow_state_button.getText() == "팔로우"){
-                    apiRepo.addFollower(App.userID, items.get(position).getUserId(),myViewHolder.follow_list_page_follow_state_button);
-                }else if(myViewHolder.follow_list_page_follow_state_button.getText() == "팔로잉"){
-                    //팔로우 취소
-
+            myViewHolder.follow_list_page_follow_state_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //언팔
                 }
-            }
-        });
+            });
+        }//팔로잉 페이지
 
         if(items.get(position).getUserImageUrl() == null||String.valueOf(items.get(position).getUserImageUrl()).length() == 0){
             Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.follow_list_page_user_imageView);

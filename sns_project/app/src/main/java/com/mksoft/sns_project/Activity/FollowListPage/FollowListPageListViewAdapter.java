@@ -52,20 +52,7 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
         myViewHolder = (MyViewHolder) holder;
         myViewHolder.follow_list_page_user_id_textView.setText(items.get(position).getUserId());
         myViewHolder.follow_list_page_user_name_textView.setText(items.get(position).getUsername());
-
-        if(pageState == 0){
-            apiRepo.checkFollowee(App.userID, items.get(position).getUserId(), myViewHolder.follow_list_page_follow_state_button, "팔로잉");
-
-            //팔로워 페이지
-        }else if(pageState == 1){
-            myViewHolder.follow_list_page_follow_state_button.setText("팔로잉");
-            myViewHolder.follow_list_page_follow_state_button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //언팔
-                }
-            });
-        }//팔로잉 페이지
+        setStateButton(myViewHolder.follow_list_page_follow_state_button,position);
 
         if(items.get(position).getUserImageUrl() == null||String.valueOf(items.get(position).getUserImageUrl()).length() == 0){
             Glide.with(context).load(R.drawable.userbaseimg).apply(RequestOptions.circleCropTransform()).into(myViewHolder.follow_list_page_user_imageView);
@@ -108,6 +95,32 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
             follow_list_page_follow_state_button = view.findViewById(R.id.follow_list_page_follow_state_button);
             follow_list_page_delete_button = view.findViewById(R.id.follow_list_page_delete_button);
 
+        }
+    }
+    private void setStateButton(Button followStateButton, int position){
+        if(items.get(position).isFollowWhithLoginUser()){
+
+            followStateButton.setText("팔로잉");
+            followStateButton.setBackgroundResource(R.drawable.custom_follow_state_button);
+            followStateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    apiRepo.subFollower(App.userID, items.get(position).getUserId());
+                    items.get(position).setFollowWhithLoginUser(false);
+                    setStateButton(followStateButton, position);
+                }
+            });
+        }else{
+            followStateButton.setText("팔로우");
+            followStateButton.setBackgroundResource(R.drawable.custom_follow_state_button_blue);
+            followStateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    apiRepo.addFollower(App.userID, items.get(position).getUserId());
+                    items.get(position).setFollowWhithLoginUser(true);
+                    setStateButton(followStateButton, position);
+                }
+            });
         }
     }
 }

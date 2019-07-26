@@ -228,7 +228,13 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     private void updateFolloweeList(List<FolloweeData> followeeDataList){
         List<UserData> userList = new ArrayList<>();
         for(int i =0; i<followeeDataList.size(); i++){
-            userList.add(apiRepo.getUserData(followeeDataList.get(i).getFolloweeID()));
+            UserData tempUser = apiRepo.getUserData(followeeDataList.get(i).getFolloweeID());
+            if(apiRepo.checkFollowee(App.userID, tempUser.getUserId())){
+                tempUser.setFollowWhithLoginUser(true);
+            }else{
+                tempUser.setFollowWhithLoginUser(false);
+            }
+            userList.add(tempUser);
 
         }
         follow_list_page_followee_tab.setText(userList.size()+" 팔로잉");
@@ -238,8 +244,14 @@ public class FollowListPageActivity extends AppCompatActivity implements HasSupp
     private void updateFollowerList(List<FollowerData> followerDataList){
         List<UserData> userList = new ArrayList<>();
 
-        for(int i =0; i<followerDataList.size(); i++) {
-            userList.add(apiRepo.getUserData(followerDataList.get(i).getFollowerID()));
+        for(int i =0; i<followerDataList.size(); i++){
+            UserData tempUser = apiRepo.getUserData(followerDataList.get(i).getFollowerID());
+            if(apiRepo.checkFollowee(App.userID, tempUser.getUserId())){
+                tempUser.setFollowWhithLoginUser(true);
+            }else{
+                tempUser.setFollowWhithLoginUser(false);
+            }
+            userList.add(tempUser);
 
         }
         follow_list_page_follower_tab.setText(userList.size()+" 팔로워");

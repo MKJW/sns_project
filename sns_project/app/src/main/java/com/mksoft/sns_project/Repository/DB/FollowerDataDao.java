@@ -20,8 +20,6 @@ public interface FollowerDataDao {
     @Insert(onConflict = REPLACE)
     void save(FollowerData followerData);
 
-    @Query("SELECT COUNT(*) FROM FollowerData WHERE masterID = :masterID")
-    Integer getFollowerCnt(String masterID);
 
     @Query("SELECT * FROM FollowerData WHERE masterID = :masterID AND lastRefresh > :lastRefreshMax LIMIT 1")
     FollowerData getFollowerDataFromMasterID(String masterID, Date lastRefreshMax);

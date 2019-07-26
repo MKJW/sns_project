@@ -23,8 +23,6 @@ public interface FolloweeDataDao {
     @Query("SELECT * FROM FolloweeData WHERE masterID = :masterID AND lastRefresh > :lastRefreshMax LIMIT 1")
     FolloweeData getFolloweeDataFromMasterID(String masterID, Date lastRefreshMax);
 
-    @Query("SELECT COUNT(*) FROM FolloweeData WHERE masterID = :masterID")
-    Integer getFolloweeCnt(String masterID);
 
     @Query("SELECT * FROM FolloweeData WHERE masterID = :masterID AND followeeID = :followeeID")
     FolloweeData getCheckFollowee(String masterID, String followeeID);
@@ -33,4 +31,8 @@ public interface FolloweeDataDao {
 
     @Query("DELETE FROM FolloweeData WHERE masterID = :masterID")
     void deleteAllFromMasterID(String masterID);
+
+    @Query("DELETE FROM FolloweeData WHERE masterID = :masterID AND followeeID = :followeeID")
+    void deleteFromMasterID(String masterID, String followeeID);
+
 }

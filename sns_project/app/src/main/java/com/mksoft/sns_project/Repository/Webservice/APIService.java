@@ -35,6 +35,14 @@ public interface APIService {
             @Path("userID") String userID
     );
 
+    @FormUrlEncoded
+    @POST("/unfollow/{userID}")
+    Call<Void> subFollower(
+            @Field("followId") String followID,
+            @Path("userID") String userID
+    );
+
+
     @GET("/user/followees/{userID}")
     Call<List<UserData>> getFollowees(
             @Path("userID") String userID

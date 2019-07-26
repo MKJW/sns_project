@@ -37,29 +37,24 @@ public class UserData {
     @Expose
     private String email = "";
 
-
     @SerializedName("userImageUrl")
     @Expose
     private String userImageUrl="";
-
-
     @SerializedName("website")
     @Expose
     private String website = "";
-
     @SerializedName("phoneNumber")
     @Expose
     private String phoneNumber = "";
-
     @SerializedName("gender")
     @Expose
     private String gender = "";
-
-
+    @Ignore
+    private boolean followWhithLoginUser = false;
 
     private Date lastRefresh = null;
 
-    public UserData(@NonNull Integer id, @NonNull String userId, @NonNull String username, String email, String userImageUrl, String website, String phoneNumber, String gender, Date lastRefresh) {
+    public UserData(@NonNull Integer id, @NonNull String userId, @NonNull String username, String email, String userImageUrl, String website, String phoneNumber, String gender, boolean followWhithLoginUser, Date lastRefresh) {
         this.id = id;
         this.userId = userId;
         this.username = username;
@@ -68,6 +63,7 @@ public class UserData {
         this.website = website;
         this.phoneNumber = phoneNumber;
         this.gender = gender;
+        this.followWhithLoginUser = followWhithLoginUser;
         this.lastRefresh = lastRefresh;
     }
 
@@ -160,5 +156,12 @@ public class UserData {
     }
 
 
+    public boolean isFollowWhithLoginUser() {
+        return followWhithLoginUser;
+    }
+
+    public void setFollowWhithLoginUser(boolean followWhithLoginUser) {
+        this.followWhithLoginUser = followWhithLoginUser;
+    }
 
 }

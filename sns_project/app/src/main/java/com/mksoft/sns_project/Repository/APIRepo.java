@@ -144,29 +144,41 @@ public class APIRepo {
     }
 
 
+    public void subFollower(String masterID, String followID){
+        webservice.subFollower(followID, masterID).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()){
+                    executor.execute(()->{
+                        followeeDataDao.deleteFromMasterID(masterID, followID);
+
+                    });
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+
+            }
+        });
+    }
     // FIXME add appropriate logic here MK!
-    public void addFollower(String masterID, String followID, Button refreshState) {
+    public void addFollower(String masterID, String followID) {
         webservice.addFollower(followID, masterID).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    if (response.body() == null) {
-                        executor.execute(()->{
-                            FolloweeData followeeData = new FolloweeData();
-                            followeeData.setMasterID(masterID);
-                            followeeData.setFolloweeID(followID);
-                            followeeDataDao.save(followeeData);
-                            refreshState.setText("팔로잉");
-                            refreshState.setBackgroundColor(0xFFFFFF);
-                            refreshState.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    //언팔
-                                }
-                            });
-                        });
-                        return;
-                    }
+                    executor.execute(()->{
+                        FolloweeData followeeData = new FolloweeData();
+                        followeeData.setMasterID(masterID);
+                        followeeData.setFolloweeID(followID);
+                        followeeDataDao.save(followeeData);
+
+                    });
+
+
+
                 }
             }
 
@@ -240,13 +252,10 @@ public class APIRepo {
                             executor.execute(()->{
                                 followerDataDao.deleteAllFromMasterID(masterID);
                                 List<UserData> userList = response.body();
-
                                 FollowerData followerData = new FollowerData();
-
                                 followerData.setMasterID(masterID);
                                 for(int i =0; i<userList.size(); i++){
                                     followerData.setFollowerID(userList.get(i).getUserId());
-
                                     followerDataDao.save(followerData);
                                     userList.get(i).setLastRefresh(new Date());
                                     userDao.save(userList.get(i));
@@ -268,25 +277,41 @@ public class APIRepo {
     }//팔로우나 팔로이 리스트에서 상대방의 간략한 정보를 볼 수 있는 수준의 정보만 저장하여 내부에 저장하자
     //클릭하여 상대방 정보를 들어간다면 그때 상대 유저에 대한 정보를 갱신해 주자.
 
-    public void checkFollowee(String masterID, String followeeID, final Button refreshState, String whenFolloweeStateMessage){
-        executor.execute(()->{
-            boolean followeeExists = (followeeDataDao.getCheckFollowee(masterID, followeeID)!=null);
-            if(followeeExists){
-                //팔로위 관계이면
 
-                refreshState.setText(whenFolloweeStateMessage);
-            }else{
-                refreshState.setText("팔로우");
-                refreshState.setTextColor(Color.WHITE);
-                refreshState.setBackgroundResource(R.drawable.custom_follow_state_button_blue);
-                refreshState.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        addFollower(App.userID, followeeID, refreshState);
-                    }
-                });
-            }
-        });
+    public boolean checkFollowee(String masterID, String followeeID){
+        FolloweeData followeeData = null;
+        try {
+            followeeData = new getFolloweeAsyncTask(followeeDataDao, masterID, followeeID).execute().get();
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(followeeData!=null){
+            return true;
+        }
+        return false;
+
+    }
+
+    private static class getFolloweeAsyncTask extends AsyncTask<Void, Void, FolloweeData> {
+        private FolloweeDataDao asyncFolloweeDao;
+        private String masterID;
+        private String followeeID;
+
+        getFolloweeAsyncTask(FolloweeDataDao dao, String masterID, String followeeID){
+            asyncFolloweeDao = dao;
+            this.masterID = masterID;
+            this.followeeID = followeeID;
+        }
+
+        @Override
+        protected FolloweeData doInBackground(Void... voids) {
+
+
+            return asyncFolloweeDao.getCheckFollowee(masterID, followeeID);
+        }
     }
     private void refreshUser(final String userLogin) {
         executor.execute(() -> {

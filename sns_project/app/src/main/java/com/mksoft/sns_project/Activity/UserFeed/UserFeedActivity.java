@@ -1,6 +1,7 @@
 package com.mksoft.sns_project.Activity.UserFeed;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +50,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
     //2 그외
     private String masterID;
     EtcMethodClass etcMethodClass;
-
+    boolean followState = false;
     @Inject
     ViewModelProvider.Factory viewModelFactory;
     private UserViewModel userViewModel;
@@ -152,7 +153,6 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         etcMethodClass.bottomLineButton.click_add_feed_button(user_feed_add_feed_button);
         clickFollower();
         clickFollowee();
-        clickStateButton();
     }
     private void init(){
         user_feed_layout = findViewById(R.id.user_feed_layout);
@@ -172,12 +172,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         user_feed_profile_name_textView = findViewById(R.id.user_feed_profile_name_textView);
         user_feed_state_button = findViewById(R.id.user_feed_state_button);
         Log.d("test0721", masterID + App.userID);
-        if(masterID.equals( App.userID)){
-            user_feed_state_button.setText("프로필 수정");
-        }else{
-            apiRepo.checkFollowee(App.userID, masterID, user_feed_state_button, "메세지");
 
-        }
 
         user_feed_follower_count_layout = findViewById(R.id.user_feed_follower_count_layout);
         user_feed_following_count_layout = findViewById(R.id.user_feed_following_count_layout);
@@ -196,21 +191,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         }
 
     }
-    private void clickStateButton(){
-        user_feed_state_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(user_feed_state_button.getText() == "팔로우"){
-                    apiRepo.addFollower(App.userID, masterID, user_feed_state_button);
-                }else if(user_feed_state_button.getText() == "팔로잉"){
-                    //팔로우 취소
 
-                }else if(user_feed_state_button.getText() == "메세지"){
-                    //메세지 기능
-                }
-            }
-        });
-    }
     private void clickFollower(){
         user_feed_follower_count_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,8 +232,47 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         }//프로필 사진 초기화
         //초기화 과정이 필요
         user_feed_profile_name_textView.setText(String.valueOf(user.getUsername()));
+        followState = apiRepo.checkFollowee(App.userID, masterID);
+        setStateButton(user_feed_state_button);
 
     }
+    private void setStateButton(Button followStateButton){
+        if(App.userID.equals(masterID)){
+            followStateButton.setText("프로필 수정");
+            followStateButton.setTextColor(Color.BLACK);
+            followStateButton.setBackgroundResource(R.drawable.custom_follow_state_button);
+        }else{
+            if(followState){
+                followStateButton.setText("팔로잉");
+                followStateButton.setTextColor(Color.BLACK);
+                followStateButton.setBackgroundResource(R.drawable.custom_follow_state_button);
+                followStateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        apiRepo.subFollower(App.userID, masterID);
+                        followState = false;
+                        setStateButton(followStateButton);
+                    }
+                });
+            }else{
+                followStateButton.setText("팔로우");
+
+                followStateButton.setTextColor(Color.WHITE);
+                followStateButton.setBackgroundResource(R.drawable.custom_follow_state_button_blue);
+                followStateButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        apiRepo.addFollower(App.userID, masterID);
+                        followState = true;
+                        setStateButton(followStateButton);
+                    }
+                });
+            }
+        }
+
+
+    }
+
     private void updateFolloweeCnt(Integer followeeCnt){
         user_feed_following_count_textView.setText(String.valueOf(followeeCnt));
     }

@@ -32,6 +32,8 @@ import java.util.concurrent.Executor;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -185,6 +187,21 @@ public class APIRepo {
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.d("addFollower", "onFailure on addFollower");
+            }
+        });
+    }
+
+    // FIXME MK!! change this logic
+    public void saveImage(MultipartBody.Part body) {
+        webservice.uploadImage(body).enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                Log.e("TAG", "success");
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Log.e("TAG", "fail" + t.getMessage());
             }
         });
     }

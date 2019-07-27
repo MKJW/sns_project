@@ -1,7 +1,15 @@
 package com.mksoft.sns_project.Activity.NewsFeed;
 
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -9,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import androidx.annotation.AnyRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
@@ -31,6 +42,10 @@ import com.mksoft.sns_project.ViewModel.NewsFeedViewModel;
 import com.mksoft.sns_project.ViewModel.UserViewModel;
 import com.mksoft.sns_project.etcMethod.EtcMethodClass;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -38,6 +53,12 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Retrofit;
 
 public class NewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
     //내부에 필요한 변수
@@ -97,6 +118,8 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.news_feed_DM_button :
+                // FIXME remove this test code
+                uploadImageToServer();
                 Toast.makeText(getApplicationContext(),"DM",Toast.LENGTH_LONG).show();
                 return true;
             default :
@@ -104,6 +127,36 @@ public class NewsFeedActivity extends AppCompatActivity implements HasSupportFra
                 return super.onOptionsItemSelected(item) ;
         }
     }//툴바 메뉴
+
+
+    private void uploadImageToServer() {
+        // FIXME you need to create File object
+
+        File file = null;
+//        File file = new File(getCacheDir() + "/please.jpg");
+//        try {
+//            InputStream is = getAssets().open("please.jpg");
+//            FileOutputStream fos = new FileOutputStream(file);
+//
+//            byte[] buffer = new byte[1024];
+//            int length = 0;
+//            while((length = is.read(buffer)) > 0) {
+//                fos.write(buffer, 0, length);
+//            }
+//
+//            fos.close();
+//            is.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        // FIXME change to get file Type from file object
+        RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), file);
+
+        // FIXME
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
+        apiRepo.saveImage(body);
+    }
 
     @Override
     protected void onResume() {

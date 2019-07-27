@@ -32,6 +32,9 @@ import javax.inject.Inject;
 import dagger.android.AndroidInjection;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.support.HasSupportFragmentInjector;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 public class AddNewsFeedActivity extends AppCompatActivity implements HasSupportFragmentInjector {
 
@@ -78,7 +81,11 @@ public class AddNewsFeedActivity extends AppCompatActivity implements HasSupport
                 feedData.setContent(add_news_feed_feed_contents_editText.getText().toString());
                 feedData.setNumOfLikes(0);
                 feedData.setWriter(App.userID);
+                feedData.setFeedImgUrl(tempFile.getName());
                 apiRepo.postNewsFeed(feedData);
+                RequestBody requestFile = RequestBody.create(MediaType.parse("image/jpg"), tempFile);
+                MultipartBody.Part body = MultipartBody.Part.createFormData("file", tempFile.getName(), requestFile);
+                apiRepo.saveImage(body);
                 return true;
             default :
                 this.finish();

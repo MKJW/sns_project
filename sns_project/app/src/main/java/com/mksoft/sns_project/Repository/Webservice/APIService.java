@@ -8,13 +8,16 @@ import com.mksoft.sns_project.Repository.DataType.UserData;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -36,10 +39,15 @@ public interface APIService {
     );
 
     @FormUrlEncoded
-    @POST("/unfollow/{userID}")
+    @POST("/user/unfollow/{userID}")
     Call<Void> subFollower(
             @Field("followId") String followID,
             @Path("userID") String userID
+    );
+    @Multipart
+    @POST("/files/upload")
+    Call<String> uploadImage(
+            @Part MultipartBody.Part file
     );
 
 

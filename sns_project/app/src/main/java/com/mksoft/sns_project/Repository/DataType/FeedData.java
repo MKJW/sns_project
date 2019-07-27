@@ -24,7 +24,7 @@ public class FeedData {
     private String writer="";
 
 
-    @SerializedName("feed_img_url")
+    @SerializedName("feedImgUrl")
     @Expose
     private String feedImgUrl="";
 

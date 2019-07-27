@@ -1,12 +1,14 @@
 package com.mksoft.sns_project.Activity.FollowListPage;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.mksoft.sns_project.Activity.UserFeed.UserFeedActivity;
 import com.mksoft.sns_project.App;
 import com.mksoft.sns_project.R;
 import com.mksoft.sns_project.Repository.APIRepo;
@@ -31,10 +34,13 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
     MyViewHolder myViewHolder;
     APIRepo apiRepo;
     Integer pageState;
+    Intent intent;
     public FollowListPageListViewAdapter(Context context, Integer pageState, APIRepo apiRepo){
         this.context = context;
         this.apiRepo = apiRepo;
         this.pageState = pageState;
+
+        intent = new Intent(context, UserFeedActivity.class);
     }
 
 
@@ -61,6 +67,14 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
 
             Glide.with(context).load(App.BASE_URL+"/files/"+items.get(position).getUserImageUrl()).apply(RequestOptions.circleCropTransform()).into(myViewHolder.follow_list_page_user_imageView);
         }
+        myViewHolder.follow_list_page_listview_item_relativeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent.putExtra("masterID", items.get(position).getUserId());
+                intent.putExtra("fromPageState", 5);//뒤로가기 버튼을 위하여
+                context.startActivity(intent);
+            }
+        });
     }//itemView초기화
 
     @Override
@@ -86,7 +100,7 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
         TextView follow_list_page_user_name_textView;
         Button follow_list_page_follow_state_button;
         ImageView follow_list_page_delete_button;
-
+        RelativeLayout follow_list_page_listview_item_relativeLayout;
         MyViewHolder(View view){
             super(view);
             follow_list_page_user_imageView = view.findViewById(R.id.follow_list_page_user_imageView);
@@ -94,6 +108,7 @@ public class FollowListPageListViewAdapter extends RecyclerView.Adapter<Recycler
             follow_list_page_user_name_textView = view.findViewById(R.id.follow_list_page_user_name_textView);
             follow_list_page_follow_state_button = view.findViewById(R.id.follow_list_page_follow_state_button);
             follow_list_page_delete_button = view.findViewById(R.id.follow_list_page_delete_button);
+            follow_list_page_listview_item_relativeLayout = view.findViewById(R.id.follow_list_page_listview_item_relativeLayout);
 
         }
     }

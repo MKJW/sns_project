@@ -183,7 +183,7 @@ public class UserFeedActivity extends AppCompatActivity implements HasSupportFra
         user_feed_add_feed_button = findViewById(R.id.user_feed_add_feed_button);
         user_feed_user_feed_button = findViewById(R.id.user_feed_user_feed_button);
 
-        if(fromPageState == 4){
+        if(App.fromPageState == 4){
             //유저 버튼을 통하여 타고 타고 들어노는 경우
             //봇텀라인 유저 사진에 검정 원 그려주자
         }else{
